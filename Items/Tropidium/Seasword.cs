@@ -1,13 +1,10 @@
-using DarknessUnbound.Dusts;
 using DarknessUnbound.Projectiles.Tropidium;
-using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DarknessUnbound.Items.Tropidium
 {
-	public class Seasword : ModItem
+	public class Seasword : DarknessItem
 	{
 		public override void SetStaticDefaults() 
 		{
@@ -15,12 +12,12 @@ namespace DarknessUnbound.Items.Tropidium
 			Tooltip.SetDefault("insert effect tooltip");
 		}
 
-		public override void SetDefaults() 
+		public override void SafeSetDefaults() 
 		{
 			item.damage = 35;
 			item.melee = true;
-			item.width = 40;
-			item.height = 40;
+			//item.width = 40;
+			//item.height = 40;
 			item.useTime = 15;
 			item.useAnimation = 15;
 			item.useStyle = ItemUseStyleID.SwingThrow;

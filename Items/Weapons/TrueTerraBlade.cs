@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 
+// TO BE FINISHED
 namespace DarknessUnbound.Items.Weapons
 {
     public class TrueTerraBlade : DarknessItem

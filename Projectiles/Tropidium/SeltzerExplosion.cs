@@ -1,10 +1,8 @@
 ﻿using Terraria;
-using System.Diagnostics;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DarknessUnbound.Dusts;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace DarknessUnbound.Projectiles.Tropidium
 {
