@@ -2,7 +2,7 @@ using Terraria.ModLoader;
 
 namespace DarknessUnbound
 {
-    public class DarknessUnbound : Mod
-    {
-    }
+	public class DarknessUnbound : Mod
+	{
+	}
 }
