@@ -1,0 +1,3 @@
+displayName = Darkness Unbound
+author = pbone and the gang
+version = 0.1
