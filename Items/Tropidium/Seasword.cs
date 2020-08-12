@@ -27,9 +27,7 @@ namespace DarknessUnbound.Items.Tropidium
 			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
 			item.useTurn = true;
-			item.scale = 1.33f;
-			item.shoot = ModContent.ProjectileType<SeltzerExplosion>();
-			item.shootSpeed = 10f;
+			item.scale = 1.5f;
 		}
         public override void AddRecipes() 
 		{

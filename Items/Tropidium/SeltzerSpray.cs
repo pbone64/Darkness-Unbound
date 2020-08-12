@@ -11,13 +11,11 @@ namespace DarknessUnbound.Items.Tropidium
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Seltzer Spray");
-			Tooltip.SetDefault("Shoots red and blue fizzy sparks " +
-				             "\nRed sparks move slowly and explode on contact" +
-				             "\nBlue sparks move quickly");
+			Tooltip.SetDefault("Shoots red and blue fizzy sparks");
 		}
 		public override void SafeSetDefaults()
 		{
-			item.damage = 30;
+			item.damage = 15;
 			item.magic = true;
 			item.mana = 4;
 			//item.width = 28;

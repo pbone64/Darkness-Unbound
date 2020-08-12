@@ -1,19 +1,17 @@
 ﻿using Terraria;
+using System.Diagnostics;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DarknessUnbound.Dusts;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using DarknessUnbound.Helpers;
 
 namespace DarknessUnbound.Projectiles.Tropidium
 {
     public class SeltzerExplosion : ModProjectile
     {
         Player player = Main.player[Main.myPlayer];
-        public override void SetStaticDefaults()
-        {
-            ProjectileID.Sets.TrailingMode[projectile.type] = 0;
-            ProjectileID.Sets.TrailCacheLength[projectile.type] = 6;
-        }
 
         public override void SetDefaults()
         {
@@ -22,17 +20,31 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.aiStyle = 0;
             projectile.friendly = true;
             projectile.hostile = false;
-            projectile.damage *= (int)1.5f;
-            projectile.velocity *= 0.66f;
-            projectile.tileCollide = true;
-            projectile.timeLeft = 4000;
+            projectile.netUpdate = true;
+            projectile.timeLeft = 60;
+            projectile.penetrate = -1;
+            projectile.alpha = 300;
         }
 
-        public override void AI()
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        { 
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
+            return true;
+        }
+
+        public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Dust dust = Dust.NewDustDirect(projectile.position, 108, 108, ModContent.DustType<TropidiumGlow>(), -projectile.velocity.X, -projectile.velocity.Y, 0, Color.White, 1.5f);
-            dust.noGravity = true;
-            projectile.rotation += MathHelper.ToRadians(9);
+            //Texture2D tex = mod.GetTexture("Projectiles/Tropidium/SeltzerExplosion");
+            projectile.rotation += MathHelper.ToRadians(15);
+            projectile.alpha -= 6;
+        }
+        public override Color? GetAlpha(Color lightColor)
+        {
+            Color blue = new Color(0, 229, 255, projectile.alpha);
+            Color red = new Color(255, 75, 43, projectile.alpha);
+            Color anim = new AnimatedColor(blue, red).GetColor();
+            return anim;
         }
     }
 }
