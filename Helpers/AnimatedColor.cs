@@ -8,23 +8,26 @@ namespace DarknessUnbound.Helpers
     {
         private static float colorCounter = 0f;
         private static bool colorLoop = false;
-        private Color color1;
-        private Color color2;
+        private Color col1;
+        private Color col2;
 
-        public AnimatedColor(Color c1, Color c2)
+        private static float spd;
+
+        public AnimatedColor(Color color1, Color color2, float speed)
         {
-            color1 = c1;
-            color2 = c2;
+            col1 = color1;
+            col2 = color2;
+            spd = speed * 0.01f;
         }
 
         public static void Update()
         {
-            colorCounter += !colorLoop ? 0.01f : -0.01f;
+            colorCounter += !colorLoop ? spd : -spd;
             colorCounter = MathHelper.Clamp(colorCounter, 0, 1);
             if (colorCounter >= 1) colorLoop = true;
             if (colorCounter <= 0) colorLoop = false;
         }
-        public Color GetColor() => Color.Lerp(color1, color2, colorCounter);
+        public Color GetColor() => Color.Lerp(col1, col2, colorCounter);
         public Vector3 LightingColor() 
         {
             Color src = GetColor();

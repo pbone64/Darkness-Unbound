@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using DarknessUnbound.Projectiles.Tropidium;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DarknessUnbound.Items.Tropidium
@@ -8,8 +9,11 @@ namespace DarknessUnbound.Items.Tropidium
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("The Whirlpool");
-            Tooltip.SetDefault("hella");
-        }
+            Tooltip.SetDefault("'Moves fast and looks cool'");
+			ItemID.Sets.Yoyo[item.type] = true;
+			ItemID.Sets.GamepadExtraRange[item.type] = 15;
+			ItemID.Sets.GamepadSmartQuickReach[item.type] = true;
+		}
 		public override void SafeSetDefaults()
 		{
 			item.damage = 32;
@@ -25,6 +29,7 @@ namespace DarknessUnbound.Items.Tropidium
 			item.channel = true;
 			item.noMelee = true;
 			item.noUseGraphic = true;
+			item.shoot = ModContent.ProjectileType<WhirlpoolYoyo>();
 		}
 		public override void AddRecipes()
 		{

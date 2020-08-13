@@ -23,6 +23,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 6;
             projectile.netUpdate = true;
             projectile.arrow = true;
+            projectile.magic = true;
         }
 
         public override Color? GetAlpha(Color lightColor)

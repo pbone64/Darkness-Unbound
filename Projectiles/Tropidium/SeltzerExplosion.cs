@@ -13,6 +13,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
     {
         Player player = Main.player[Main.myPlayer];
 
+        float randomizer;
         public override void SetDefaults()
         {
             projectile.width = 108;
@@ -24,6 +25,8 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.timeLeft = 60;
             projectile.penetrate = -1;
             projectile.alpha = 300;
+            projectile.magic = true;
+            projectile.tileCollide = false;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -31,6 +34,11 @@ namespace DarknessUnbound.Projectiles.Tropidium
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
             return true;
+        }
+
+        public override void AI()
+        {
+            randomizer = 5f + Main.rand.NextFloat(-2f, 2f);
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -43,7 +51,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
         {
             Color blue = new Color(0, 229, 255, projectile.alpha);
             Color red = new Color(255, 75, 43, projectile.alpha);
-            Color anim = new AnimatedColor(blue, red).GetColor();
+            Color anim = new AnimatedColor(blue, red, randomizer).GetColor();
             return anim;
         }
     }

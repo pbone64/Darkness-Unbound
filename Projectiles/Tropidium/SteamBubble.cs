@@ -18,6 +18,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.friendly = true;
             projectile.hostile = false;
             projectile.penetrate = -1;
+            projectile.magic = true;
         }
 
         public override void AI()

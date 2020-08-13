@@ -21,7 +21,7 @@ namespace DarknessUnbound.Dusts
             dust.scale *= 0.975f;
             Color red = new Color(99, 10, 50);
             Color blue = new Color(7, 43, 96);
-            Lighting.AddLight(dust.position, new AnimatedColor(red, blue).LightingColor());
+            Lighting.AddLight(dust.position, new AnimatedColor(red, blue, 1f).LightingColor());
             if (dust.scale < 0.05f)
             {
                 dust.active = false;

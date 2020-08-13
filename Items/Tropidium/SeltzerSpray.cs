@@ -11,7 +11,9 @@ namespace DarknessUnbound.Items.Tropidium
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Seltzer Spray");
-			Tooltip.SetDefault("Shoots red and blue fizzy sparks");
+			Tooltip.SetDefault("Shoots red and blue fizzy sparks" +
+				"\n Blue sparks will home in on enemies" +
+				"\n Red sparks will explode and leave behind a watery vortex");
 		}
 		public override void SafeSetDefaults()
 		{

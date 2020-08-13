@@ -25,6 +25,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 6;
             projectile.netUpdate = true;
             projectile.timeLeft = 300;
+            projectile.magic = true;
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -45,7 +46,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
         {
             if (projectile.ai[1] == 0)
             {
-                for (int greg = 0; greg < 5; greg++)
+                for (int greg = 0; greg < 1; greg++)
                 {
                     Projectile.NewProjectile(projectile.position, new Vector2(0, 0), ModContent.ProjectileType<SeltzerExplosion>(), projectile.damage * (int)1.5f, 0, projectile.owner, 0, 1);
                 }
