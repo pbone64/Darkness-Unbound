@@ -4,31 +4,26 @@ using Terraria;
 
 namespace DarknessUnbound.Helpers
 {
-    public class AnimatedColor
+    public struct AnimatedColor
     {
-        private static float colorCounter = 0f;
-        private static bool colorLoop = false;
-        private Color col1;
-        private Color col2;
+        public Color color1;
+        public Color color2;
+        public float speedModifier;
 
-        private static float spd;
-
-        public AnimatedColor(Color color1, Color color2, float speed)
+        /// <param name="c1">The first color</param>
+        /// <param name="c2">The second color</param>
+        /// <param name="speedMod">A way to modifiy how fast it goes. Lower is slower, higher is faster</param>
+        public AnimatedColor(Color c1, Color c2, float speedMod = 25f)
         {
-            col1 = color1;
-            col2 = color2;
-            spd = speed * 0.01f;
+            color1 = c1;
+            color2 = c2;
+            speedModifier = speedMod;
         }
 
-        public static void Update()
-        {
-            colorCounter += !colorLoop ? spd : -spd;
-            colorCounter = MathHelper.Clamp(colorCounter, 0, 1);
-            if (colorCounter >= 1) colorLoop = true;
-            if (colorCounter <= 0) colorLoop = false;
-        }
-        public Color GetColor() => Color.Lerp(col1, col2, colorCounter);
-        public Vector3 LightingColor() 
+        public Color GetColor() => Color.Lerp(color1, color2, (float)(Math.Sin(Main.GameUpdateCount / speedModifier) + 1f) / 2f);
+        
+
+        public Vector3 LightingColor()
         {
             Color src = GetColor();
             return new Vector3(src.R / 255f, src.G / 255f, src.B / 255f);

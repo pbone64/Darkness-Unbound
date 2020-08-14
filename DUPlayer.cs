@@ -9,7 +9,7 @@ namespace DarknessUnbound
     {
         public override void PreUpdate()
         {
-            AnimatedColor.Update();
+            //AnimatedColor.Update();
         }
     }
 }

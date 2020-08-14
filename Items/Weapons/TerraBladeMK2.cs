@@ -42,7 +42,7 @@ namespace DarknessUnbound.Items.Weapons
             //colors
             Color green = new Color(13, 112, 41);
             Color blue = new Color(0, 97, 180);
-            Lighting.AddLight(player.Center, new AnimatedColor(green, blue, 1f).LightingColor());
+            Lighting.AddLight(player.Center, new AnimatedColor(green, blue).LightingColor());
         }
         public override Color? GetAlpha(Color lightColor)
         {
