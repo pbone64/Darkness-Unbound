@@ -1,7 +1,6 @@
 ﻿using DarknessUnbound.Helpers;
 using DarknessUnbound.Projectiles;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,7 +11,8 @@ namespace DarknessUnbound.Items.Weapons
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Terra Blade MKII");
+            DisplayName.SetDefault("Terra Edge");
+            Tooltip.SetDefault("Rapidly shoots homing beams");
         }
 
         public override void SafeSetDefaults()
@@ -28,6 +28,7 @@ namespace DarknessUnbound.Items.Weapons
             item.UseSound = SoundID.Item60;
             item.shootSpeed = 16f;
             item.shoot = ModContent.ProjectileType<TerraMK2Blade>();
+            item.rare = ItemRarityID.Cyan;
         }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)

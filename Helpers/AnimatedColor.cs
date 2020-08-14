@@ -21,12 +21,7 @@ namespace DarknessUnbound.Helpers
         }
 
         public Color GetColor() => Color.Lerp(color1, color2, (float)(Math.Sin(Main.GameUpdateCount / speedModifier) + 1f) / 2f);
-        
 
-        public Vector3 LightingColor()
-        {
-            Color src = GetColor();
-            return new Vector3(src.R / 255f, src.G / 255f, src.B / 255f);
-        }
+        public Vector3 LightingColor() => GetColor().ToVector3() / 255f;
     }
 }
