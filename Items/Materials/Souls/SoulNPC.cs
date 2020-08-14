@@ -7,7 +7,7 @@ namespace DarknessUnbound.Items.Materials.Souls
     {
         public override void NPCLoot(NPC npc)
         {
-            if (Main.player[npc.FindClosestPlayer()].ZoneUnderworldHeight)
+            if (Main.player[npc.FindClosestPlayer()].ZoneUnderworldHeight && Main.rand.NextBool(5))
             {
                 Item.NewItem(npc.getRect(), ModContent.ItemType<SoulOfFire>());
             }

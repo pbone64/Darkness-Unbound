@@ -8,7 +8,7 @@ namespace DarknessUnbound.Items.Materials.Souls
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Soul of Fire");
-            Tooltip.SetDefault("The essence of burning creatures");
+            Tooltip.SetDefault("'The essence of burning creatures'");
             ItemID.Sets.ItemIconPulse[item.type] = true;
             ItemID.Sets.ItemNoGravity[item.type] = true;
         }

@@ -1,5 +1,7 @@
-﻿using Terraria;
+﻿using DarknessUnbound.Items.Materials.Souls;
+using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DarknessUnbound.Items.Weapons.Fire
 {
@@ -9,7 +11,7 @@ namespace DarknessUnbound.Items.Weapons.Fire
         {
             Tooltip.SetDefault("'Burning Hot!'" +
                              "\nDoes not consume ammo" +
-                             "\nRapidly shoots burning arrows");
+                             "\nRapidly shoots hellish arrows");
         }
 
         public override void SafeSetDefaults()
@@ -28,5 +30,22 @@ namespace DarknessUnbound.Items.Weapons.Fire
 			item.shoot = ProjectileID.HellfireArrow;
 			item.shootSpeed = 16f;
 		}
+
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ModContent.ItemType<SoulOfFire>(), 20);
+            recipe.AddIngredient(ItemID.AdamantiteRepeater);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ModContent.ItemType<SoulOfFire>(), 20);
+            recipe.AddIngredient(ItemID.TitaniumRepeater);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+        }
     }
 }
