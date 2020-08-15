@@ -1,9 +1,11 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DarknessUnbound.Items.Accessories
 {
-    // TBD - Equipped sprite, tweak stats? recipe
+    // TBD - tweak stats? recipe
+    [AutoloadEquip(EquipType.Shield)]
     public class TerraShield : DarknessItem
     {
         public override void SetStaticDefaults()
