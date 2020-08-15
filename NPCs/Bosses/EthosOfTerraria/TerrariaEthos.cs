@@ -41,6 +41,13 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         {
             CultistRingTexture = ModContent.GetTexture("Terraria/Projectile_" + ProjectileID.CultistRitual);
             BlurTexture = ModContent.GetTexture("DarknessUnbound/NPCs/Bosses/EthosOfTerraria/TerrariaEthosBlur");
+            AppDomain.CurrentDomain.ProcessExit += Deconstruct;
+        }
+
+        static void Deconstruct(object sender, EventArgs args)
+        {
+            CultistRingTexture.Dispose();
+            BlurTexture.Dispose();
         }
 
         public const int PatternLength = 1;
