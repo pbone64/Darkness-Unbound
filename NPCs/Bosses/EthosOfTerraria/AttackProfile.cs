@@ -4,9 +4,6 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
 {
     public struct AttackProfile
     {
-        public const int Attack_DartCircle = 1;
-        public const int Attack_Wavy = 2;
-
         public float CD;
         public Action Attack;
 
