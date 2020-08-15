@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using System.Diagnostics;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DarknessUnbound.Dusts;
@@ -10,6 +9,11 @@ namespace DarknessUnbound.Projectiles.Tropidium
 {
     public class SeltzerQuick : ModProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+            ProjectileID.Sets.TrailCacheLength[projectile.type] = 6;
+        }
 
         public override void SetDefaults()
         {
@@ -19,17 +23,13 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.friendly = true;
             projectile.hostile = false;
             projectile.tileCollide = true;
-            ProjectileID.Sets.TrailingMode[projectile.type] = 0;
-            ProjectileID.Sets.TrailCacheLength[projectile.type] = 6;
             projectile.netUpdate = true;
             projectile.arrow = true;
             projectile.magic = true;
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
+        public override Color? GetAlpha(Color lightColor) => Color.White;
+
         public override void AI()
         {
             projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
