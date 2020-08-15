@@ -58,5 +58,19 @@ namespace DarknessUnbound.Items.Accessories
             player.starCloak = true;
             player.longInvince = true;
         }
+
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.AnkhShield);
+            recipe.AddIngredient(ItemID.CharmofMyths);
+            recipe.AddIngredient(ItemID.FrozenTurtleShell);
+            recipe.AddIngredient(ItemID.FleshKnuckles);
+            recipe.AddIngredient(ItemID.StarVeil);
+            recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
+            recipe.SetResult(this);
+            recipe.AddTile(TileID.TinkerersWorkbench);
+            recipe.AddRecipe();
+        }
     }
 }

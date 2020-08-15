@@ -61,7 +61,7 @@ namespace DarknessUnbound.Projectiles
             //colors
             Color green = new Color(13, 112, 41);
             Color blue = new Color(0, 97, 180);
-            Lighting.AddLight(projectile.Center, new AnimatedColor(green, blue, 1f).LightingColor());
+            Lighting.AddLight(projectile.Center / 16f, new AnimatedColor(green, blue).LightingColor());
         }
     }
 }

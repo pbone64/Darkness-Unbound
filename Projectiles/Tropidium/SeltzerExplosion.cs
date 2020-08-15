@@ -51,7 +51,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
         {
             Color blue = new Color(0, 229, 255, projectile.alpha);
             Color red = new Color(255, 75, 43, projectile.alpha);
-            Color anim = new AnimatedColor(blue, red, randomizer).GetColor();
+            Color anim = new AnimatedColor(blue, red).GetColor();
             return anim;
         }
     }
