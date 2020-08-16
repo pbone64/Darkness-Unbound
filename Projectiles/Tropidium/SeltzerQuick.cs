@@ -33,16 +33,17 @@ namespace DarknessUnbound.Projectiles.Tropidium
         public override void AI()
         {
             projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
+
             Dust dust = Dust.NewDustPerfect(projectile.Center, ModContent.DustType<TropidiumGlow>(), null, 0, Color.White, 1f);
             dust.noGravity = true;
 
             foreach (NPC npc in from NPC n in Main.npc where n.active && !n.friendly && !n.dontTakeDamage && !n.immortal && n.lifeMax > 5 select n) //the pbone line
             {
                 float distanceToNPC = (npc.Center - projectile.Center).Length();
-                if (distanceToNPC <= 300 && distanceToNPC >= 0) // necessary unless you want every projectile in the world to come forth
-                {
+
+                // necessary unless you want every projectile in the world to come forth
+                if (distanceToNPC <= 300 && distanceToNPC >= 0) 
                     projectile.velocity = projectile.DirectionTo(npc.Center) * 30;
-                }
             }
         }
     }

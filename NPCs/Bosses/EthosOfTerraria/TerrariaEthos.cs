@@ -5,13 +5,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Events;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.Localization;
@@ -138,9 +135,9 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                     npc.buffType[i] = 0;
                 }
 
-                DialogueTimer++;
+                if (string.IsNullOrEmpty(DarknessUnbound.UNDERTABLE_DIALOGUE)) DialogueTimer++;
                 oldDialogueQuotient = dialogueQuotient;
-                dialogueQuotient = (int)(DialogueTimer / 120f);
+                dialogueQuotient = (int)(DialogueTimer / 120);
 
                 if (oldDialogueQuotient != dialogueQuotient)
                 {
@@ -170,7 +167,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                             switch (DialogueState)
                             {
                                 case 0:
-                                    chat("I fear that if you continue this path you will plague the world with evils beyond comprehension. ");
+                                    chat("I fear that if you continue this path, you will plague the world with evils beyond comprehension");
                                     break;
                             }
                             break;
@@ -203,7 +200,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             hpPercentageDialogue();
             // END OF DIALOGUE
 
-            if (!dialogue && !DarknessUnbound.showEthosOptions && !transition && saidHpPercentages < 18)
+            if (!dialogue && !DarknessUnbound.showEthosOptions && !transition && saidHpPercentages < 11)
             {
                 AttackTimer++;
                 if (cheating) AttackTimer++;
@@ -483,92 +480,55 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 8.75f && saidHpPercentages < 2)
+            if (npc.life < npc.lifeMax / 10f * 8f && saidHpPercentages < 2)
             {
                 text = "Are your morals mistaken?";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 8.5f && saidHpPercentages < 3)
+            if (npc.life < npc.lifeMax / 10f * 7f && saidHpPercentages < 3)
             {
                 text = "You, who could save us all...";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 8.35f && saidHpPercentages < 4)
+            if (npc.life < npc.lifeMax / 10f * 6f && saidHpPercentages < 4)
             {
                 text = "All I have sacrificed...";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 8.4f && saidHpPercentages < 5)
-            {
-                text = "Petty emoitions control your soul...";
-                saidHpPercentages++;
-            }
-
-            if (npc.life < npc.lifeMax / 10f * 8f && saidHpPercentages < 6)
+            if (npc.life < npc.lifeMax / 10f * 5f && saidHpPercentages < 5)
             {
                 text = "Who shall survive your wrath?";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 7.75f && saidHpPercentages < 7)
-            {
-                text = "Auegh...! You've grown too strong!";
-                saidHpPercentages++;
-            }
-
-            if (npc.life < npc.lifeMax / 10f * 7.25f && saidHpPercentages < 8)
-            {
-                text = "I can't hold out for must longer...";
-                saidHpPercentages++;
-            }
-
-            if (npc.life < npc.lifeMax / 10f * 7f && saidHpPercentages < 9)
+            if (npc.life < npc.lifeMax / 10f * 4f && saidHpPercentages < 6)
             {
                 text = "Soon, It'll all be consumed...";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 6.75f && saidHpPercentages < 10)
+            if (npc.life < npc.lifeMax / 10f * 3f && saidHpPercentages < 7)
             {
                 text = "Give up! It'll make this less painful for everyone!";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 6.5f && saidHpPercentages < 11)
+            if (npc.life < npc.lifeMax / 10f * 1.5f && saidHpPercentages < 8)
             {
                 text = "Alright, now I'M mad!!!!";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 6f && saidHpPercentages < 12)
+            if (npc.life < npc.lifeMax / 10f * 1.25f && saidHpPercentages < 9)
             {
-                text = "Can we just stop this?!";
+                text = "Time will keep... *huff* rewinding... *huff*";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 5.75f && saidHpPercentages < 13)
-            {
-                text = "Niether of us will die";
-                saidHpPercentages++;
-            }
-
-            if (npc.life < npc.lifeMax / 10f * 5.5f && saidHpPercentages < 14)
-            {
-                text = "Time will keepy... *huff* rewinding *huff*";
-                saidHpPercentages++;
-            }
-
-            if (npc.life < npc.lifeMax / 10f * 5.25f && saidHpPercentages < 15)
-            {
-                CombatText.clearAll();
-                text = "Eurgh..! We'll never die!";
-                saidHpPercentages++;
-            }
-
-            if (npc.life <= npc.lifeMax / 10f * 5f && saidHpPercentages < 16)
+            if (npc.life <= npc.lifeMax / 10f * 1f && saidHpPercentages < 10)
             {
                 text = "I guess I could just... become invincible...";
                 npc.dontTakeDamage = true;
@@ -576,13 +536,13 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 5f && saidHpPercentages < 17 && Main.GameUpdateCount % 110 == 0)
+            if (npc.life < npc.lifeMax / 10f * 1f && saidHpPercentages < 11 && Main.GameUpdateCount % 110 == 0)
             {
                 text = "Then you'll never kill me";
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 5f && saidHpPercentages < 18 && Main.GameUpdateCount % 110 == 0)
+            if (npc.life < npc.lifeMax / 10f * 1f && saidHpPercentages < 12 && Main.GameUpdateCount % 110 == 0)
             {
                 text = "Will you spare me..? Or finish the job?";
                 DarknessUnbound.showEthosOptions = true;
@@ -590,35 +550,39 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 saidHpPercentages++;
             }
 
-            if (saidHpPercentages > 16 && saidHpPercentages < 21)
+            if (saidHpPercentages > 11 && saidHpPercentages < 14)
             {
                 for (int i = 0; i < Main.musicFade.Length; i++)
                 {
                     Main.musicFade[i] = 0f;
                 }
+                if (string.IsNullOrEmpty(DarknessUnbound.UNDERTABLE_DIALOGUE)) DialogueTimer++;
             }
+
+            if (!string.IsNullOrEmpty(text)) chat(text);
 
             if (DarknessUnbound.spared == 0)
             {
-                if (Main.GameUpdateCount % 90 == 0)
+                if (DialogueTimer % 90 == 0 && string.IsNullOrEmpty(DarknessUnbound.UNDERTABLE_DIALOGUE))
                 {
                     switch (saidHpPercentages)
                     {
-                        case 18:
+                        case 12:
                             chat("...What?");
                             break;
-                        case 19:
+                        case 13:
                             chat("Even after I've aggressed you, you still wish to spare me?");
                             break;
-                        case 20:
+                        case 14:
                             chat("...");
                             break;
-                        case 21:
-                            chat("You're so naive", sad: true);
+                        case 15:
+                            chat("You're so naive", true);
                             foreach (Player player in from Player p in Main.player where p.active select p)
                             {
                                 player.KillMe(PlayerDeathReason.ByCustomReason($"{player.name} was dunked on. "), 42069, 0);
                             }
+                            DialogueTimer = 0;
                             DarknessUnbound.spared = -1;
                             break;
                     }
@@ -629,38 +593,38 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
 
             if (DarknessUnbound.spared == 1)
             {
-                if (Main.GameUpdateCount % 90 == 0)
+                if (DialogueTimer % 90 == 0 && string.IsNullOrEmpty(DarknessUnbound.UNDERTABLE_DIALOGUE))
                 {
                     switch (saidHpPercentages)
                     {
-                        case 18:
-                            Projectile proj = Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ProjectileID.StardustGuardianExplosion, 0, 1f);
-                            proj.hostile = false;
-                            proj.friendly = false;
+                        case 12:
+                            Main.PlaySound(SoundID.NPCDeath62, npc.Center);
+                            for (int i = 0; i < 9; i++)
+                            {
+                                Projectile proj = Projectile.NewProjectileDirect(npc.Center + Main.rand.NextVector2Square(24, 24), Vector2.Zero, ModContent.ProjectileType<Explosion>(), 0, 1f);
+                                proj.hostile = false;
+                                proj.friendly = false;
+                            }
                             chat("W-what?!");
                             break;
-                        case 19:
+                        case 13:
                             chat("Even after I... g-gave you a chance...?");
                             break;
-                        case 20:
+                        case 14:
                             chat("...Fine then! If I must, I will use my true power!");
                             break;
-                        case 21:
+                        case 15:
                             chat("En garde, Terrarian!", true);
                             transition = true;
                             Main.PlaySound(SoundID.Zombie, npc.Center, 105);
                             DarknessUnbound.spared = -1;
+                            DialogueTimer = 0;
                             break;
                     }
 
                     saidHpPercentages++;
                 }
-            }
 
-            if (!string.IsNullOrEmpty(text))
-            {
-                chat(text);
-                CombatText.NewText(npc.getRect(), Color.Lime, text, true);
             }
         }
         #endregion
@@ -677,9 +641,12 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 DarknessUnbound.whiteScreen = true;
                 DarknessUnbound.whiteFade = 0f;
                 DarknessUnbound.whiteLoop = false;
+                npc.dontTakeDamage = false;
+                npc.immortal = false;
             }
         }
 
+        [Obsolete]
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
             spriteBatch.End();
@@ -725,6 +692,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 drawPos.X += ArenaWidth;
                 spriteBatch.Draw(Main.blackTileTexture, drawPos, null, color, 0f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
             }
+            ChatManager.DrawColorCodedString(spriteBatch, Main.fontDeathText, saidHpPercentages.ToString(), Vector2.One * 10, Color.White, 0, default, Vector2.One * 3);
         }
 
         public override bool CheckDead()
@@ -737,11 +705,10 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) => damageTaken += damage;
         public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
         {
-            Main.NewText(damageTaken);
             if (!cheating && damageTaken > DPSCap * 60f)
             {
                 cheating = true;
-                chat("Nice try, cheater. trollface.xnb", anger: true);
+                chat("Nice try, cheater. trollface.xnb");
             }
             return true;
         }
@@ -772,12 +739,13 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             PassiveDialogueState = (float)reader.ReadDouble();
         }
 
-        private void chat(string text, bool dramatic = false, bool sad = false, bool anger = false)
+        private void chat(string text, bool sad = false)
         {
-            if (Main.netMode == NetmodeID.SinglePlayer)
+            /*if (Main.netMode == NetmodeID.SinglePlayer)
                 Main.NewText($"<Ethos of Terraria> {text}" + (dramatic ? "!!" : ""), (anger ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
             else
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"<Ethos of Terraria> {text}"), (anger ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"<Ethos of Terraria> {text}"), (anger ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));*/
+            DarknessUnbound.SET_UNDERTABLE_DIALOGUE(text, Main.npcTexture[npc.type], sad, cheating);
         }
 
         private void copypasta(string[] text, int expectedSaid)

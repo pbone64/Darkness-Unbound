@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,15 +29,10 @@ namespace DarknessUnbound.Items.Weapons
             item.useAmmo = AmmoID.Bullet;
             item.shootSpeed = 18f;
         }
-        public override bool ConsumeAmmo(Player player)
-		{
-			return Main.rand.NextFloat() >= .66f;
-		}
+        public override bool ConsumeAmmo(Player player) => Main.rand.NextFloat() >= .66f;
 
-        public override Vector2? HoldoutOffset()
-        {
-            return new Vector2(-10, 0);
-        }
+        public override Vector2? HoldoutOffset() => new Vector2(-10, 0);
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
@@ -56,10 +50,9 @@ namespace DarknessUnbound.Items.Weapons
             Vector2 randSpeed = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(2));
             speedX = randSpeed.X;
             speedY = randSpeed.Y;
-            if (type == ProjectileID.Bullet)
-            {
-                type = ProjectileID.BulletHighVelocity;
-            }
+
+            if (type == ProjectileID.Bullet) type = ProjectileID.BulletHighVelocity;
+
             return true;
         }
     }

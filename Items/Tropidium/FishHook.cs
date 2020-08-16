@@ -35,8 +35,10 @@ namespace DarknessUnbound.Items.Tropidium
             Vector2 wetlinextremeprofessionalhairgel = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(10));
             speedX = wetlinextremeprofessionalhairgel.X;
             speedY = wetlinextremeprofessionalhairgel.Y;
+
             return true;
         }
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);

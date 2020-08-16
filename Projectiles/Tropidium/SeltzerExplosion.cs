@@ -1,11 +1,9 @@
 ﻿using Terraria;
-using System.Diagnostics;
-using Terraria.ID;
 using Terraria.ModLoader;
-using DarknessUnbound.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using DarknessUnbound.Helpers;
+using System;
 
 namespace DarknessUnbound.Projectiles.Tropidium
 {
@@ -26,12 +24,15 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.tileCollide = false;
         }
 
+        [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         { 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
             return true;
         }
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 
         public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
         {
@@ -39,12 +40,13 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.rotation += MathHelper.ToRadians(15);
             projectile.alpha -= 6;
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             Color blue = new Color(0, 229, 255, projectile.alpha);
             Color red = new Color(255, 75, 43, projectile.alpha);
-            Color anim = new AnimatedColor(blue, red).GetColor();
-            return anim;
+
+            return new AnimatedColor(blue, red).GetColor();
         }
     }
 }

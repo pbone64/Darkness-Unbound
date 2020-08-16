@@ -1,10 +1,9 @@
-using DarknessUnbound.Projectiles.Tropidium;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DarknessUnbound.Items.Tropidium
 {
-	public class Seasword : DarknessItem
+    public class Seasword : DarknessItem
 	{
 		public override void SetStaticDefaults() 
 		{
