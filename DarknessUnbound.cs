@@ -20,7 +20,8 @@ namespace DarknessUnbound
         public static float whiteFade;
         public static bool whiteLoop;
 
-        public static Texture UNDERTABLE_BOX;
+        public static Texture2D UNDERTABLE_BOX;
+        public static Texture2D UNDERTABLE_HEADTEX;
         public static string UNDERTABLE_DIALOGUE = "";
         public static int UNDERTABLE_DIALOGUE_COUNTER = 0;
 
@@ -60,11 +61,15 @@ namespace DarknessUnbound
 
             if (!string.IsNullOrEmpty(UNDERTABLE_DIALOGUE))
             {
+                float width = UNDERTABLE_BOX.Width;
+                float halfWidth = UNDERTABLE_BOX.Width / 2f;
+                Vector2 screenCenter = new Vector2(Main.screenWidth / 2f, Main.screenHeight / 2f);
 
+                spriteBatch.Draw(UNDERTABLE_BOX, screenCenter - new Vector2(halfWidth, Main.screenWidth / -6f + 8f), Color.White);
             }
         }
 
-        public static void SET_UNDERTABLE_DIALOGUE(string text)
+        public static void SET_UNDERTABLE_DIALOGUE(string text, Texture2D headTex)
         {
             UNDERTABLE_DIALOGUE = text;
             UNDERTABLE_DIALOGUE_COUNTER = 0;
@@ -74,6 +79,7 @@ namespace DarknessUnbound
         {
             if (!Main.dedServ)
             {
+                SET_UNDERTABLE_DIALOGUE("MacGuffin", default);
                 SkyManager.Instance["DarknessUnbound:EthosSky"] = new EthosP2Sky();
                 UNDERTABLE_BOX = ModContent.GetTexture("DarknessUnbound/TextBox");
             }
