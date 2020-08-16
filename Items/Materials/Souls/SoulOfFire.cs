@@ -22,9 +22,6 @@ namespace DarknessUnbound.Items.Materials.Souls
             item.rare = ItemRarityID.Orange;
         }
 
-        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-        {
-            Lighting.AddLight(item.position, Color.Orange.ToVector3());
-        }
+        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) => Lighting.AddLight(item.position, Color.Orange.ToVector3());
     }
 }
