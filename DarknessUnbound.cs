@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
@@ -24,6 +25,7 @@ namespace DarknessUnbound
         public static Texture2D UNDERTABLE_HEADTEX;
         public static string UNDERTABLE_DIALOGUE = "";
         public static int UNDERTABLE_DIALOGUE_COUNTER = 0;
+        public string UNDERTABLE_REALTEXT = "";
 
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
@@ -70,22 +72,25 @@ namespace DarknessUnbound
                 float width = UNDERTABLE_BOX.Width;
                 float halfWidth = width / 2f;
                 float height = UNDERTABLE_BOX.Height;
-                float halfHeight = height / 2f;
+                float halfHeight = height / 2f; 
                 float headWidth = UNDERTABLE_HEADTEX.Width;
                 char[] textSplit = UNDERTABLE_DIALOGUE.ToCharArray();
-                string realText = "";
+                string oldText = UNDERTABLE_REALTEXT;
+                UNDERTABLE_REALTEXT = "";
                 UNDERTABLE_DIALOGUE_COUNTER++;
                 for (int i = 0; i < textSplit.Length; i++)
                 {
-                    if (UNDERTABLE_DIALOGUE_COUNTER / 14f >= i) realText += textSplit[i];
+                    if (UNDERTABLE_DIALOGUE_COUNTER / 14f >= i) UNDERTABLE_REALTEXT += textSplit[i];
                     else break;
                 }
+
+                if (UNDERTABLE_REALTEXT != oldText) Main.PlaySound(GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/Beep"));
 
                 Vector2 anchor = new Vector2(Main.screenWidth / 2f - halfWidth, Main.screenHeight - height - 20);
 
                 spriteBatch.Draw(UNDERTABLE_BOX, anchor, Color.White);
                 spriteBatch.Draw(UNDERTABLE_HEADTEX, anchor + new Vector2(UNDERTABLE_HEADTEX.Width / 2f, halfHeight / 2f), Color.White);
-                ChatManager.DrawColorCodedString(spriteBatch, Main.fontCombatText[1], "* " + realText, anchor + new Vector2(headWidth * 1.5f, 30), Color.White, 0f, default, new Vector2(1.75f));
+                ChatManager.DrawColorCodedString(spriteBatch, Main.fontCombatText[1], "* " + UNDERTABLE_REALTEXT, anchor + new Vector2(headWidth * 1.5f, 30), Color.White, 0f, default, new Vector2(1.75f));
 
                 if (UNDERTABLE_DIALOGUE_COUNTER / 14f > textSplit.Length + 8) SET_UNDERTABLE_DIALOGUE("", default);
             }
