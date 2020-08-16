@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.ID;
 
 namespace DarknessUnbound.Items.Materials.Souls
@@ -18,6 +20,11 @@ namespace DarknessUnbound.Items.Materials.Souls
             item.maxStack = 999;
             item.value = Item.sellPrice(0, 0, 2, 0);
             item.rare = ItemRarityID.Orange;
+        }
+
+        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+        {
+            Lighting.AddLight(item.position, Color.Orange.ToVector3());
         }
     }
 }
