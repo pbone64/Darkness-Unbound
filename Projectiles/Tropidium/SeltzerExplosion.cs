@@ -11,9 +11,6 @@ namespace DarknessUnbound.Projectiles.Tropidium
 {
     public class SeltzerExplosion : ModProjectile
     {
-        Player player = Main.player[Main.myPlayer];
-
-        float randomizer;
         public override void SetDefaults()
         {
             projectile.width = 108;
@@ -34,11 +31,6 @@ namespace DarknessUnbound.Projectiles.Tropidium
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
             return true;
-        }
-
-        public override void AI()
-        {
-            randomizer = 5f + Main.rand.NextFloat(-2f, 2f);
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)

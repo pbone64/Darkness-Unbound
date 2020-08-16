@@ -1,15 +1,22 @@
-﻿using DarknessUnbound.Projectiles.Bosses.EthosOfTerraria;
+﻿using DarknessUnbound.Helpers;
+using DarknessUnbound.Projectiles.Bosses.EthosOfTerraria;
+using DarknessUnbound.Projectiles.Tropidium;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Events;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
 {
@@ -27,7 +34,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         public override void SetDefaults()
         {
             npc.Size = new Vector2(76, 142);
-            npc.lifeMax = 150000;
+            npc.lifeMax = 275000;
             npc.knockBackResist = 0f;
             npc.defense = 75;
             npc.damage = 0;
@@ -54,15 +61,24 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             BlurTexture.Dispose();
         }
 
-        public const int PatternLength = 1;
+        public const int PatternLength = 2;
+        public const int DPSCap = 85;
+
+        public const int ArenaWidth = 1600;
+        public const int ArenaHeight = 1200;
+        public static int ArenaWidthHalf { get => ArenaWidth / 2; }
+        public static int ArenaHeightHalf { get => ArenaHeight / 2; }
+        public Vector2 ArenaTopCorner { get => new Vector2(ArenaWidthHalf, ArenaHeightHalf) + npc.Center; }
 
         public AttackProfile Attack_Ring = default;
         public AttackProfile Attack_RandomBullets = default;
+        public AttackProfile Attack_LaserRain = default;
 
         private bool drawRing = true;
         private bool dialogue = true;
         private bool initialized = false;
         private bool superAttacks = false;
+        private bool phaseTwo = false;
         private float ringRotation = 0;
         private int oldDialogueQuotient = 0;
         private int dialogueQuotient = 0;
@@ -71,6 +87,8 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         private int saidCopypasta = 0;
         private int copypastaCounter = 0;
         private int saidHpPercentages = 0;
+        private float phaseTransition = 0f;
+        private bool transition;
 
         public float DialogueTimer { get => npc.ai[0]; set => npc.ai[0] = value; }
         public float DialogueState { get => npc.ai[1]; set => npc.ai[1] = value; }
@@ -85,10 +103,18 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         private float PassiveDialogueState;
         private int oldPassiveDialogueQuotient = 0;
         private int passiveDialogueQuotient = 0;
+        private int damageTaken = 0;
+        private bool cheating = false;
 
         public override void AI()
         {
+            SkyManager.Instance.Deactivate("DarknessUnbound:EthosSky");
+            if (phaseTwo) SkyManager.Instance.Activate("DarknessUnbound:EthosSky");
             drawOffsetY = -8 + ((float)Math.Sin(Main.GameUpdateCount / 25f) * 6f);
+
+            damageTaken -= DPSCap;
+            if (damageTaken < 0)
+                damageTaken = 0;
 
             if (npc.timeLeft < 10) npc.timeLeft = 10;
 
@@ -96,6 +122,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             {
                 Attack_Ring = new AttackProfile(30, () => AttackMethod_THERING());
                 Attack_RandomBullets = new AttackProfile(45, () => AttackMethod_RandomBullets());
+                Attack_LaserRain = new AttackProfile(60, () => AttackMethod_LaserRain());
 
                 initialized = true;
             }
@@ -123,7 +150,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                             switch (DialogueState)
                             {
                                 case 0:
-                                    chat(Main.LocalPlayer.name);
+                                    chat(Main.LocalPlayer.name + "...");
                                     break;
                             }
                             break;
@@ -133,7 +160,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                             switch (DialogueState)
                             {
                                 case 0:
-                                    chat("I've been watching you throughout your journey");
+                                    chat("You have killed too much and are putting the delicate balance of Terraria at risk.");
                                     break;
                             }
                             break;
@@ -143,7 +170,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                             switch (DialogueState)
                             {
                                 case 0:
-                                    chat("The bosses you've slaughtered... the lives you've ended...");
+                                    chat("I fear that if you continue this path you will plague the world with evils beyond comprehension. ");
                                     break;
                             }
                             break;
@@ -153,7 +180,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                             switch (DialogueState)
                             {
                                 case 0:
-                                    chat("IT ENDS NOW", true);
+                                    chat("For the good of the world, you must pay for your sins. Now perish", true);
                                     Main.PlaySound(SoundID.Roar, npc.Center, 0);
                                     goto end;
                             }
@@ -170,18 +197,22 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                     }
                 }
             }
-            else
-                PassiveDialogue();
+            //else if (!transition && !DarknessUnbound.showEthosOptions && !phaseTwo &&saidHpPercentages < 18)
+                //PassiveDialogue();
+
+            hpPercentageDialogue();
             // END OF DIALOGUE
 
-            if (!dialogue)
+            if (!dialogue && !DarknessUnbound.showEthosOptions && !transition && saidHpPercentages < 18)
             {
                 AttackTimer++;
+                if (cheating) AttackTimer++;
 
                 switch (AttackCounter)
                 {
                     case 0: attack = Attack_Ring; break;
                     case 1: attack = Attack_RandomBullets; break;
+                    case 2: attack = Attack_LaserRain; break;
 
                 }
 
@@ -200,6 +231,8 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                     }
                 }
             }
+
+            if (transition) becomePhase2();
         }
 
         private void AttackMethod_THERING()
@@ -214,7 +247,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 proj.ai[1] = (Vector2.One.RotatedBy(Math.PI / 12f * (InAttackTimer1 / 2)) * 4f).ToRotation();
             }
 
-            if (InAttackTimer1 >= 48)
+            if (InAttackTimer1 >= 48 / (cheating ? 2f : 1f))
             {
                 AttackFinished = 1f;
             }
@@ -224,9 +257,26 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         {
             InAttackTimer1++;
 
-            //Main.NewText("RANDOM BULLETS");
+            for (int i = 0; i < 2; i++)
+            {
+                int side = Main.rand.Next(2);
+                int startX = (int)(side == 0 ? npc.Center.X + Main.rand.Next(-ArenaWidthHalf, ArenaWidthHalf + 1) : npc.Center.X + ArenaWidthHalf * (Main.rand.NextBool(2) ? -1 : 1));
+                int startY = (int)(side == 1 ? npc.Center.Y + Main.rand.Next(-ArenaHeightHalf, ArenaHeightHalf + 1) : npc.Center.Y + ArenaHeightHalf * (Main.rand.NextBool(2) ? -1 : 1));
+                Projectile proj = Projectile.NewProjectileDirect(new Vector2(startX, startY) + new Vector2(4f), Vector2.One.RotatedBy(new Vector2(startX, startY).ToRotation()) * 3f, ModContent.ProjectileType<EthosLeaf>(), 85, 1f);
+                proj.localAI[1] = 2;
+            }
 
-            if (InAttackTimer1 >= 90)
+            if (InAttackTimer1 >= 90 / (cheating ? 2f : 1f))
+            {
+                AttackFinished = 1f;
+            }
+        }
+
+        private void AttackMethod_LaserRain()
+        {
+            InAttackTimer1++;
+
+            if (InAttackTimer1 >= 180 / (cheating ? 2f : 1))
             {
                 AttackFinished = 1f;
             }
@@ -382,7 +432,6 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             }
 
             if (FUNNY_BOSS) checkCopypasta();
-            hpPercentageDialogue();
         }
 
         private void checkCopypasta()
@@ -452,7 +501,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 saidHpPercentages++;
             }
 
-            if (npc.life < npc.lifeMax / 10f * 8.45f && saidHpPercentages < 5)
+            if (npc.life < npc.lifeMax / 10f * 8.4f && saidHpPercentages < 5)
             {
                 text = "Petty emoitions control your soul...";
                 saidHpPercentages++;
@@ -514,6 +563,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
 
             if (npc.life < npc.lifeMax / 10f * 5.25f && saidHpPercentages < 15)
             {
+                CombatText.clearAll();
                 text = "Eurgh..! We'll never die!";
                 saidHpPercentages++;
             }
@@ -535,7 +585,76 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             if (npc.life < npc.lifeMax / 10f * 5f && saidHpPercentages < 18 && Main.GameUpdateCount % 110 == 0)
             {
                 text = "Will you spare me..? Or finish the job?";
+                DarknessUnbound.showEthosOptions = true;
+                DarknessUnbound.spared = -1;
                 saidHpPercentages++;
+            }
+
+            if (saidHpPercentages > 16 && saidHpPercentages < 21)
+            {
+                for (int i = 0; i < Main.musicFade.Length; i++)
+                {
+                    Main.musicFade[i] = 0f;
+                }
+            }
+
+            if (DarknessUnbound.spared == 0)
+            {
+                if (Main.GameUpdateCount % 90 == 0)
+                {
+                    switch (saidHpPercentages)
+                    {
+                        case 18:
+                            chat("...What?");
+                            break;
+                        case 19:
+                            chat("Even after I've aggressed you, you still wish to spare me?");
+                            break;
+                        case 20:
+                            chat("...");
+                            break;
+                        case 21:
+                            chat("You're so naive", sad: true);
+                            foreach (Player player in from Player p in Main.player where p.active select p)
+                            {
+                                player.KillMe(PlayerDeathReason.ByCustomReason($"{player.name} was dunked on. "), 42069, 0);
+                            }
+                            DarknessUnbound.spared = -1;
+                            break;
+                    }
+
+                    saidHpPercentages++;
+                }
+            }
+
+            if (DarknessUnbound.spared == 1)
+            {
+                if (Main.GameUpdateCount % 90 == 0)
+                {
+                    switch (saidHpPercentages)
+                    {
+                        case 18:
+                            Projectile proj = Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ProjectileID.StardustGuardianExplosion, 0, 1f);
+                            proj.hostile = false;
+                            proj.friendly = false;
+                            chat("W-what?!");
+                            break;
+                        case 19:
+                            chat("Even after I... g-gave you a chance...?");
+                            break;
+                        case 20:
+                            chat("...Fine then! If I must, I will use my true power!");
+                            break;
+                        case 21:
+                            chat("En garde, Terrarian!", true);
+                            transition = true;
+                            Main.PlaySound(SoundID.Zombie, npc.Center, 105);
+                            DarknessUnbound.spared = -1;
+                            break;
+                    }
+
+                    saidHpPercentages++;
+                }
             }
 
             if (!string.IsNullOrEmpty(text))
@@ -546,11 +665,31 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         }
         #endregion
 
+        private void becomePhase2()
+        {
+            phaseTransition += 0.075f;
+            if (transition && phaseTransition >= 30)
+            {
+                phaseTransition = 0f;
+                Main.PlaySound(SoundID.Zombie, npc.Center, 104);
+                phaseTwo = true;
+                transition = false;
+                DarknessUnbound.whiteScreen = true;
+                DarknessUnbound.whiteFade = 0f;
+                DarknessUnbound.whiteLoop = false;
+            }
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
-            spriteBatch.Draw(BlurTexture, npc.Center - Main.screenPosition + new Vector2(0f, drawOffsetY + 4f), null, Color.White, 0f, BlurTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
+            if (phaseTransition > 0f)
+            {
+                float rotation = -MathHelper.Lerp(0, MathHelper.Pi * 2f, phaseTransition);
+                spriteBatch.Draw(Main.projectileTexture[ModContent.ProjectileType<SeltzerExplosion>()], npc.Center - Main.screenPosition, null, new AnimatedColor(Color.Lime, Color.Aqua).GetColor() * 0.95f, rotation, Main.projectileTexture[ModContent.ProjectileType<SeltzerExplosion>()].Size() * 0.5f, phaseTransition * 2f, SpriteEffects.None, 0f);
+            }
+            spriteBatch.Draw(BlurTexture, npc.Center - Main.screenPosition + new Vector2(0f, drawOffsetY + 4f), null, cheating ? Color.Red * 2f : Color.White, 0f, BlurTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, default, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
             return true;
@@ -560,8 +699,51 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         {
             Texture2D ringTexture = CultistRingTexture;
             Vector2 origin = ringTexture.Size() * 0.5f;
+            if (drawRing) spriteBatch.Draw(ringTexture, npc.Center - Main.screenPosition, null, cheating ? Color.Red * 2f : Color.LimeGreen * 1.75f, ringRotation * (cheating ? 1.35f : 1f), origin, 1f, SpriteEffects.None, 0f);
 
-            if (drawRing) spriteBatch.Draw(ringTexture, npc.Center - Main.screenPosition, null, Color.LimeGreen * 1.75f, ringRotation, origin, 1f, SpriteEffects.None, 0f);
+            int portalWidth = 16;
+            int portalDepth = 16;
+            Color color = new Color(64, 255, 64);
+            int centerX = (int)npc.Center.X;
+            int centerY = (int)npc.Center.Y;
+            Main.instance.LoadProjectile(ProjectileID.PortalGunGate);
+            for (int x = centerX - ArenaWidthHalf; x < centerX + ArenaWidthHalf; x += portalWidth)
+            {
+                int frameNum = (1 / 6 + x / portalWidth) % Main.projFrames[ProjectileID.PortalGunGate];
+                Rectangle frame = new Rectangle(0, frameNum * (portalWidth + 2), portalDepth, portalWidth);
+                Vector2 drawPos = new Vector2(x + portalWidth / 2, centerY - ArenaHeight / 2) - Main.screenPosition;
+                spriteBatch.Draw(Main.blackTileTexture, drawPos, null, color, (float)-Math.PI / 2f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+                drawPos.Y += ArenaHeight;
+                spriteBatch.Draw(Main.blackTileTexture, drawPos, null, color, (float)Math.PI / 2f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+            }
+            for (int y = centerY - ArenaHeightHalf; y < centerY + ArenaHeightHalf; y += portalWidth)
+            {
+                int frameNum = (1 / 6 + y / portalWidth) % Main.projFrames[ProjectileID.PortalGunGate];
+                Rectangle frame = new Rectangle(0, frameNum * (portalWidth + 2), portalDepth, portalWidth);
+                Vector2 drawPos = new Vector2(centerX - ArenaWidth / 2, y + portalWidth / 2) - Main.screenPosition;
+                spriteBatch.Draw(Main.blackTileTexture, drawPos, null, color, (float)Math.PI, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+                drawPos.X += ArenaWidth;
+                spriteBatch.Draw(Main.blackTileTexture, drawPos, null, color, 0f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
+            }
+        }
+
+        public override bool CheckDead()
+        {
+            SkyManager.Instance.Deactivate("DarknessUnbound:EthosSky");
+            return true;
+        }
+
+        public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit) => damageTaken += damage;
+        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) => damageTaken += damage;
+        public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+        {
+            Main.NewText(damageTaken);
+            if (!cheating && damageTaken > DPSCap * 60f)
+            {
+                cheating = true;
+                chat("Nice try, cheater. trollface.xnb", anger: true);
+            }
+            return true;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -590,12 +772,12 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             PassiveDialogueState = (float)reader.ReadDouble();
         }
 
-        private void chat(string text, bool dramatic = false, bool sad = false)
+        private void chat(string text, bool dramatic = false, bool sad = false, bool anger = false)
         {
             if (Main.netMode == NetmodeID.SinglePlayer)
-                Main.NewText($"<Ethos of Terraria> {text}" + (dramatic ? "!!" : ""), (sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
+                Main.NewText($"<Ethos of Terraria> {text}" + (dramatic ? "!!" : ""), (anger ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
             else
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"<Ethos of Terraria> {text}"), (sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"<Ethos of Terraria> {text}"), (anger ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
         }
 
         private void copypasta(string[] text, int expectedSaid)
@@ -615,6 +797,44 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 copypastaCounter = 0;
                 saidCopypasta++;
             }
+        }
+    }
+
+    public class EthosPlayer : ModPlayer
+    {
+        public override void PreUpdate() => player.ClampToArena();
+    }
+
+    public static class EthosUtils
+    {
+        public static bool InArena(this Entity entity)
+        {
+            if (!NPC.AnyNPCs(ModContent.NPCType<TerrariaEthos>())) return false;
+
+            foreach (NPC enemy in from NPC n in Main.npc where n.active && n.type == ModContent.NPCType<TerrariaEthos>() select n)
+            {
+                if (entity.position.X                  <= enemy.Center.X - TerrariaEthos.ArenaWidthHalf ) return false;
+                if (entity.position.X +  entity.width  >= enemy.Center.X + TerrariaEthos.ArenaWidthHalf ) return false;
+                if (entity.position.Y                  <= enemy.Center.Y - TerrariaEthos.ArenaHeightHalf) return false;
+                if (entity.position.Y +  entity.height >= enemy.Center.Y + TerrariaEthos.ArenaHeightHalf) return false;
+            }
+
+            return true;
+        }
+
+        public static bool ClampToArena(this Entity entity)
+        {
+            if (!NPC.AnyNPCs(ModContent.NPCType<TerrariaEthos>())) return false;
+
+            foreach (NPC enemy in from NPC n in Main.npc where n.active && n.type == ModContent.NPCType<TerrariaEthos>() select n)
+            {
+                if (entity.position.X                  <= enemy.Center.X - TerrariaEthos.ArenaWidthHalf ) { entity.position.X = enemy.Center.X - TerrariaEthos.ArenaWidthHalf;                  entity.velocity.X = 0; }
+                if (entity.position.X +  entity.width  >= enemy.Center.X + TerrariaEthos.ArenaWidthHalf ) { entity.position.X = enemy.Center.X + TerrariaEthos.ArenaWidthHalf  - entity.width;  entity.velocity.X = 0; }
+                if (entity.position.Y                  <= enemy.Center.Y - TerrariaEthos.ArenaHeightHalf) { entity.position.Y = enemy.Center.Y - TerrariaEthos.ArenaHeightHalf;                 entity.velocity.Y = 0; }
+                if (entity.position.Y +  entity.height >= enemy.Center.Y + TerrariaEthos.ArenaHeightHalf) { entity.position.Y = enemy.Center.Y + TerrariaEthos.ArenaHeightHalf - entity.height; entity.velocity.Y = 0; }
+            }
+
+            return false;
         }
     }
 }
