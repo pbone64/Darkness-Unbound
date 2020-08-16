@@ -79,7 +79,7 @@ namespace DarknessUnbound
         {
             if (!Main.dedServ)
             {
-                SET_UNDERTABLE_DIALOGUE("MacGuffin", default);
+                SET_UNDERTABLE_DIALOGUE("", default);
                 SkyManager.Instance["DarknessUnbound:EthosSky"] = new EthosP2Sky();
                 UNDERTABLE_BOX = ModContent.GetTexture("DarknessUnbound/TextBox");
             }
