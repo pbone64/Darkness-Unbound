@@ -63,9 +63,9 @@ namespace DarknessUnbound
             {
                 float width = UNDERTABLE_BOX.Width;
                 float halfWidth = UNDERTABLE_BOX.Width / 2f;
-                Vector2 screenCenter = new Vector2(Main.screenWidth / 2f, Main.screenHeight / 2f);
 
-                spriteBatch.Draw(UNDERTABLE_BOX, screenCenter - new Vector2(halfWidth, Main.screenHeight / -4f + 8f), Color.White);
+                spriteBatch.Draw(UNDERTABLE_BOX, new Vector2(Main.screenWidth / 2f - halfWidth, Main.screenHeight - UNDERTABLE_BOX.Height - 20), Color.White);
+
             }
         }
 
