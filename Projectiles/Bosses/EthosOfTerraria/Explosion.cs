@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -33,6 +29,8 @@ namespace DarknessUnbound.Projectiles.Bosses.EthosOfTerraria
 			projectile.alpha -= 63;
 			if (projectile.alpha < 0)
 				projectile.alpha = 0;
+
+			
 
 			if (projectile.ai[0] != 1f)
 				return;
