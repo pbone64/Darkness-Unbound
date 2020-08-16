@@ -1,8 +1,5 @@
 ﻿using DarknessUnbound.Helpers;
-using log4net.Util;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Linq;
 using Terraria;
 using Terraria.ID;

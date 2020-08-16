@@ -45,10 +45,9 @@ namespace DarknessUnbound.Items.Weapons
             Color blue = new Color(0, 97, 180);
             Lighting.AddLight(player.Center, new AnimatedColor(green, blue).LightingColor());
         }
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
+
+        public override Color? GetAlpha(Color lightColor) => Color.White;
+
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             int projTotal = Main.rand.Next(1, 3);
@@ -59,8 +58,10 @@ namespace DarknessUnbound.Items.Weapons
                 randSpeed = randSpeed * (1f - Main.rand.NextFloat() * 0.1f);
                 Projectile.NewProjectile(position, randSpeed, type, damage, knockBack, player.whoAmI);
             }
+
             return false;
         }
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);

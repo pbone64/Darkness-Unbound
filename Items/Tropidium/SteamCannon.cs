@@ -12,6 +12,7 @@ namespace DarknessUnbound.Items.Tropidium
 		{
 			DisplayName.SetDefault("Steam Cannon");
 			Tooltip.SetDefault("Blasts hot steam a short distance ahead");
+
 			Item.staff[item.type] = true;
 		}
 
@@ -38,7 +39,9 @@ namespace DarknessUnbound.Items.Tropidium
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
 			Vector2 posDiff = position += new Vector2(Main.rand.Next(-5, 5));
+
 			Projectile.NewProjectile(posDiff.X, posDiff.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
+
 			return false;
         }
 

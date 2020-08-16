@@ -12,8 +12,8 @@ namespace DarknessUnbound.Items.Tropidium
 		{
 			DisplayName.SetDefault("Seltzer Spray");
 			Tooltip.SetDefault("Shoots red and blue fizzy sparks" +
-				"\n Blue sparks will home in on enemies" +
-				"\n Red sparks will explode and leave behind a watery vortex");
+				"\nBlue sparks will home in on enemies" +
+				"\nRed sparks will explode and leave behind a watery vortex");
 		}
 		public override void SafeSetDefaults()
 		{
@@ -39,9 +39,11 @@ namespace DarknessUnbound.Items.Tropidium
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
 			type = Main.rand.Next(new int[] { type, ModContent.ProjectileType<SeltzerQuick>(), ModContent.ProjectileType<SeltzerVolatile>()});
+
 			Vector2 posDiff = position += new Vector2(Main.rand.Next(-15, 15));
 			position.X = posDiff.X;
 			position.Y = posDiff.Y;
+
 			return true;
         }
 

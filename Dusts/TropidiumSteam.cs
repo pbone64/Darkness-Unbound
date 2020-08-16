@@ -1,6 +1,5 @@
 ﻿using DarknessUnbound.Helpers;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -20,18 +19,16 @@ namespace DarknessUnbound.Dusts
             dust.rotation += dust.velocity.X * 0.2f;
             dust.velocity *= 1.09f;
             dust.scale *= 0.975f;
+
+            if (dust.scale < 0.05f) dust.active = false;
+
             Color red = new Color(99, 10, 50);
             Color blue = new Color(7, 43, 96);
+
             Lighting.AddLight(dust.position, new AnimatedColor(red, blue).LightingColor());
-            if (dust.scale < 0.05f)
-            {
-                dust.active = false;
-            }
+
             return true;
         }
-        public override Color? GetAlpha(Dust dust, Color lightColor)
-        {
-            return new Color(255, 255, 255, dust.alpha);
-        }
+        public override Color? GetAlpha(Dust dust, Color lightColor) => new Color(255, 255, 255, dust.alpha);
     }
 }

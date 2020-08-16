@@ -1,7 +1,6 @@
 ﻿using DarknessUnbound.Dusts;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -25,6 +24,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
         public override void AI()
         {
             projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+
             Dust dust = Dust.NewDustPerfect(projectile.Center, ModContent.DustType<TropidiumGlow>(), null, 0, Color.White, 1f);
         }
 
@@ -36,7 +36,9 @@ namespace DarknessUnbound.Projectiles.Tropidium
                 dust.noGravity = true;
                 dust.velocity *= 1.1f;
             }
+
             Main.PlaySound(SoundID.Item10, projectile.position);
+
             return true;
         }
     }

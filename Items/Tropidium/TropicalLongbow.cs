@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -26,10 +25,9 @@ namespace DarknessUnbound.Items.Tropidium
             item.shoot = AmmoID.Arrow;
             item.noMelee = true;
         }
-        public override Vector2? HoldoutOffset()
-        {
-            return new Vector2(-4, 0);
-        }
+
+        public override Vector2? HoldoutOffset() => new Vector2(-4, 0);
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);

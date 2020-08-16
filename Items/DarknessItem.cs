@@ -12,6 +12,9 @@ namespace DarknessUnbound.Items
         /// </summary>
         public virtual bool AutoSize() => true;
 
+        /// <summary>
+        /// Identical to SetDefaults except that the item's size is already set
+        /// </summary>
         public virtual void SafeSetDefaults() { }
 
         public sealed override void SetDefaults()

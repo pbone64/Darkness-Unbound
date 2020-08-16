@@ -9,10 +9,9 @@ namespace DarknessUnbound.Projectiles.Bosses.EthosOfTerraria
 {
     public class EthosLeaf : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[projectile.type] = 5;
-        }
+        private bool one_reachedEnd = false;
+
+        public override void SetStaticDefaults() => Main.projFrames[projectile.type] = 5;
 
         public override void SetDefaults()
         {
@@ -27,14 +26,15 @@ namespace DarknessUnbound.Projectiles.Bosses.EthosOfTerraria
         }
 
         public override Color? GetAlpha(Color lightColor) => Color.White;
-        bool one_reachedEnd = false;
 
         public override void AI()
         {
             projectile.rotation = projectile.velocity.ToRotation();
 
             projectile.frameCounter++;
+
             if (projectile.frameCounter % 8 == 0) projectile.frame++;
+
             if (projectile.frame == 5) projectile.frame = 0;
 
             projectile.alpha -= 5;
@@ -51,6 +51,7 @@ namespace DarknessUnbound.Projectiles.Bosses.EthosOfTerraria
             }
 
             projectile.localAI[1]--;
+
             if (!projectile.InArena() && projectile.localAI[1] <= 0) projectile.Kill();
         }
 

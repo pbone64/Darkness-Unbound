@@ -2,9 +2,9 @@
 using Terraria;
 using Terraria.ID;
 
-// TO BE FINISHED
 namespace DarknessUnbound.Items.Weapons
 {
+    //TODO: Finish.
     public class TrueTerraBlade : DarknessItem
     {
         public override void SetStaticDefaults()
@@ -47,34 +47,31 @@ namespace DarknessUnbound.Items.Weapons
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            Vector2 shootPosition = position;
             float shootSpeedX = speedX;
             float shootSpeedY = speedY;
             Vector2 target = Main.screenPosition + new Vector2((float)Main.mouseX, (float)Main.mouseY);
             float ceilingLimit = target.Y;
-            if (ceilingLimit > player.Center.Y - 200f)
-            {
-                ceilingLimit = player.Center.Y - 200f;
-            }
+
+            if (ceilingLimit > player.Center.Y - 200f) ceilingLimit = player.Center.Y - 200f;
+
             for (int i = 0; i < 3; i++)
             {
-                shootPosition = player.Center + new Vector2((-(float)Main.rand.Next(401) * player.direction), -600f);
+                Vector2 shootPosition = player.Center + new Vector2((-(float)Main.rand.Next(401) * player.direction), -600f);
                 shootPosition.Y -= (100 * i);
                 Vector2 heading = target - shootPosition;
-                if (heading.Y < 0f)
-                {
-                    heading.Y *= -1f;
-                }
-                if (heading.Y < 20f)
-                {
-                    heading.Y = 20f;
-                }
+
+                if (heading.Y < 0f) heading.Y *= -1f;
+
+                if (heading.Y < 20f) heading.Y = 20f;
+
                 heading.Normalize();
                 heading *= new Vector2(shootSpeedX, shootSpeedY).Length();
                 shootSpeedX = heading.X;
                 shootSpeedY = heading.Y + 40 * 0.02f;
+
                 Projectile.NewProjectile(shootPosition.X, shootPosition.Y, shootSpeedX, shootSpeedY, ProjectileID.StarWrath, (int)(damage * 1.5f), knockBack, player.whoAmI, 0f, ceilingLimit);
             }
+
             return true;
         }
 

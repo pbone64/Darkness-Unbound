@@ -1,7 +1,6 @@
 ﻿using DarknessUnbound.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DarknessUnbound.Projectiles.Tropidium
@@ -23,9 +22,10 @@ namespace DarknessUnbound.Projectiles.Tropidium
 
         public override void AI()
         {
-            projectile.velocity *= 0.94f;
             Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, ModContent.DustType<TropidiumSteam>(), 0, 0, 0, Color.White, 1.1f);
             dust.noGravity = true;
+
+            projectile.velocity *= 0.94f;
         }
     }
 }
