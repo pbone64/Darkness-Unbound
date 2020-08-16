@@ -62,7 +62,7 @@ namespace DarknessUnbound
             if (!string.IsNullOrEmpty(UNDERTABLE_DIALOGUE))
             {
                 float width = UNDERTABLE_BOX.Width;
-                float halfWidth = UNDERTABLE_BOX.Width / 2f;
+                float halfWidth = width / 2f;
 
                 spriteBatch.Draw(UNDERTABLE_BOX, new Vector2(Main.screenWidth / 2f - halfWidth, Main.screenHeight - UNDERTABLE_BOX.Height - 20), Color.White);
 
