@@ -34,8 +34,10 @@ namespace DarknessUnbound
                 Vector2 screenCenter = new Vector2(Main.screenWidth / 2f, Main.screenHeight / 2f);
                 Vector2 posSpare = screenCenter - lengthSpare - new Vector2(lengthSpare.X / 2f, 96);
                 Vector2 posKill = screenCenter + new Vector2(lengthKill.X, -lengthKill.Y) - new Vector2(0, 96);
+
                 ChatManager.DrawColorCodedString(spriteBatch, Main.fontDeathText, "Spare?", posSpare, spareRect.Contains(Main.MouseScreen.ToPoint()) ? Color.YellowGreen : Color.Lime, 0f, default, new Vector2(1.75f));
                 ChatManager.DrawColorCodedString(spriteBatch, Main.fontDeathText, "Kill.", posKill, killRect.Contains(Main.MouseScreen.ToPoint()) ? Color.YellowGreen : Color.Lime, 0f, default, new Vector2(1.75f));
+
                 spareRect = new Rectangle((int)posSpare.X, (int)posSpare.Y, (int)lengthSpare.X, (int)lengthSpare.Y);
                 killRect = new Rectangle((int)posKill.X, (int)posKill.Y, (int)lengthKill.X, (int)lengthKill.Y);
 
@@ -62,10 +64,10 @@ namespace DarknessUnbound
             if (!string.IsNullOrEmpty(UNDERTABLE_DIALOGUE))
             {
                 float width = UNDERTABLE_BOX.Width;
-                float halfWidth = UNDERTABLE_BOX.Width / 2f;
+                float halfWidth = width / 2f;
                 Vector2 screenCenter = new Vector2(Main.screenWidth / 2f, Main.screenHeight / 2f);
 
-                spriteBatch.Draw(UNDERTABLE_BOX, screenCenter - new Vector2(halfWidth, Main.screenHeight / -4f + 8f), Color.White);
+                spriteBatch.Draw(UNDERTABLE_BOX, screenCenter - new Vector2(halfWidth, Main.screenHeight / -4f + UNDERTABLE_BOX.Height / 4f), Color.White);
             }
         }
 
