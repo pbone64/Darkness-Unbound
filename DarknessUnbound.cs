@@ -6,6 +6,7 @@ using Terraria.GameInput;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace DarknessUnbound
@@ -26,6 +27,9 @@ namespace DarknessUnbound
         public static string UNDERTABLE_DIALOGUE = "";
         public static int UNDERTABLE_DIALOGUE_COUNTER = 0;
         public string UNDERTABLE_REALTEXT = "";
+        public static bool UNDERTABLE_SAD = false;
+        public static bool UNDERTABLE_ANGER = false;
+        private static float[] UNDERTABLE_OLDMUS = new float[Main.musicFade.Length];
 
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
@@ -69,38 +73,75 @@ namespace DarknessUnbound
 
             if (!string.IsNullOrEmpty(UNDERTABLE_DIALOGUE))
             {
+                if (UNDERTABLE_SAD)
+                {
+                    for (int i = 0; i < Main.musicFade.Length; i++)
+                    {
+                        Main.musicFade[i] = 0f;
+                    }
+                }
+
                 float width = UNDERTABLE_BOX.Width;
                 float halfWidth = width / 2f;
                 float height = UNDERTABLE_BOX.Height;
                 float halfHeight = height / 2f; 
                 float headWidth = UNDERTABLE_HEADTEX.Width;
                 char[] textSplit = UNDERTABLE_DIALOGUE.ToCharArray();
+                float delay = (UNDERTABLE_ANGER ? 3f : 6f);
                 string oldText = UNDERTABLE_REALTEXT;
                 UNDERTABLE_REALTEXT = "";
                 UNDERTABLE_DIALOGUE_COUNTER++;
                 for (int i = 0; i < textSplit.Length; i++)
                 {
-                    if (UNDERTABLE_DIALOGUE_COUNTER / 14f >= i) UNDERTABLE_REALTEXT += textSplit[i];
+                    if (UNDERTABLE_DIALOGUE_COUNTER / delay >= i)
+                    {
+                        UNDERTABLE_REALTEXT += textSplit[i];
+                        if (UNDERTABLE_SAD) UNDERTABLE_REALTEXT += " ";
+                    }
                     else break;
                 }
-
-                if (UNDERTABLE_REALTEXT != oldText) Main.PlaySound(GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/Beep"));
-
+                if (UNDERTABLE_REALTEXT != oldText && !UNDERTABLE_SAD) Main.PlaySound(GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/Beep"));
                 Vector2 anchor = new Vector2(Main.screenWidth / 2f - halfWidth, Main.screenHeight - height - 20);
 
                 spriteBatch.Draw(UNDERTABLE_BOX, anchor, Color.White);
                 spriteBatch.Draw(UNDERTABLE_HEADTEX, anchor + new Vector2(UNDERTABLE_HEADTEX.Width / 2f, halfHeight / 2f), Color.White);
-                ChatManager.DrawColorCodedString(spriteBatch, Main.fontCombatText[1], "* " + UNDERTABLE_REALTEXT, anchor + new Vector2(headWidth * 1.5f, 30), Color.White, 0f, default, new Vector2(1.75f));
 
-                if (UNDERTABLE_DIALOGUE_COUNTER / 14f > textSplit.Length + 8) SET_UNDERTABLE_DIALOGUE("", default);
+                //Vector2 length = ChatManager.GetStringSize(Main.fontCombatText[1], "* " + UNDERTABLE_REALTEXT, new Vector2(1.75f));
+                string actuallyDrawThis = "";
+                string[] realWords = UNDERTABLE_REALTEXT.Split();
+
+                string line = "";
+                foreach (string s in realWords)
+                {
+                    if (Main.fontCombatText[1].MeasureString(line).X * 1.75f < width - UNDERTABLE_HEADTEX.Width * 3.05f)
+                    {
+                        actuallyDrawThis += (" " + s);
+                        line += (" " + s);
+                    }
+                    else
+                    {
+                        actuallyDrawThis += ("\n" + s);
+                        line = (s);
+                    }
+                }
+                ChatManager.DrawColorCodedString(spriteBatch, Main.fontCombatText[1], "* " + actuallyDrawThis, anchor + new Vector2(headWidth * 1.5f + 8, 30), (UNDERTABLE_SAD ? Color.DarkGray : UNDERTABLE_ANGER ? Color.Red : Color.White), 0f, default, new Vector2(1.5f));
+
+                if (UNDERTABLE_DIALOGUE_COUNTER / delay > textSplit.Length + 8)
+                {
+                    if (UNDERTABLE_SAD) Main.musicFade = UNDERTABLE_OLDMUS;
+                    SET_UNDERTABLE_DIALOGUE("", default);
+                }
             }
         }
 
-        public static void SET_UNDERTABLE_DIALOGUE(string text, Texture2D headTex)
+        public static void SET_UNDERTABLE_DIALOGUE(string text, Texture2D headTex, bool sad = false, bool anger = false)
         {
             UNDERTABLE_DIALOGUE = text;
             UNDERTABLE_HEADTEX = headTex;
             UNDERTABLE_DIALOGUE_COUNTER = 0;
+            UNDERTABLE_ANGER = anger;
+            UNDERTABLE_SAD = sad;
+            if (sad) UNDERTABLE_OLDMUS = Main.musicFade;
         }
 
         public override void Load()

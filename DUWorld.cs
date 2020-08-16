@@ -10,7 +10,7 @@ namespace DarknessUnbound
         public override void Initialize()
         {
             restlessShadows = false;
-            DarknessUnbound.SET_UNDERTABLE_DIALOGUE("Hello, world!", ModContent.GetTexture("DarknessUnbound/NPCs/Bosses/EthosOfTerraria/TerrariaEthos"));
+            //DarknessUnbound.SET_UNDERTABLE_DIALOGUE("Hello, world! I'm blue and you're a large blongus! This line is here to test the line breaking", ModContent.GetTexture("DarknessUnbound/NPCs/Bosses/EthosOfTerraria/TerrariaEthos"));
         }
 
         public override TagCompound Save() => new TagCompound() {
