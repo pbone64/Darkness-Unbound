@@ -69,15 +69,32 @@ namespace DarknessUnbound
             {
                 float width = UNDERTABLE_BOX.Width;
                 float halfWidth = width / 2f;
+                float height = UNDERTABLE_BOX.Height;
+                float halfHeight = height / 2f;
+                float headWidth = UNDERTABLE_HEADTEX.Width;
+                char[] textSplit = UNDERTABLE_DIALOGUE.ToCharArray();
+                string realText = "";
+                UNDERTABLE_DIALOGUE_COUNTER++;
+                for (int i = 0; i < textSplit.Length; i++)
+                {
+                    if (UNDERTABLE_DIALOGUE_COUNTER / 14f >= i) realText += textSplit[i];
+                    else break;
+                }
 
-                spriteBatch.Draw(UNDERTABLE_BOX, new Vector2(Main.screenWidth / 2f - halfWidth, Main.screenHeight - UNDERTABLE_BOX.Height - 20), Color.White);
+                Vector2 anchor = new Vector2(Main.screenWidth / 2f - halfWidth, Main.screenHeight - height - 20);
 
+                spriteBatch.Draw(UNDERTABLE_BOX, anchor, Color.White);
+                spriteBatch.Draw(UNDERTABLE_HEADTEX, anchor + new Vector2(UNDERTABLE_HEADTEX.Width / 2f, halfHeight / 2f), Color.White);
+                ChatManager.DrawColorCodedString(spriteBatch, Main.fontCombatText[1], "* " + realText, anchor + new Vector2(headWidth * 1.5f, 30), Color.White, 0f, default, new Vector2(1.75f));
+
+                if (UNDERTABLE_DIALOGUE_COUNTER / 14f > textSplit.Length + 8) SET_UNDERTABLE_DIALOGUE("", default);
             }
         }
 
         public static void SET_UNDERTABLE_DIALOGUE(string text, Texture2D headTex)
         {
             UNDERTABLE_DIALOGUE = text;
+            UNDERTABLE_HEADTEX = headTex;
             UNDERTABLE_DIALOGUE_COUNTER = 0;
         }
 
