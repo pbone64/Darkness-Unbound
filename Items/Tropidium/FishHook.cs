@@ -18,7 +18,7 @@ namespace DarknessUnbound.Items.Tropidium
             item.useAnimation = item.useTime = 18;
             item.useStyle = ItemUseStyleID.SwingThrow;
             item.damage = 20;
-            item.ranged = true;
+            item.thrown = true;
             item.rare = ItemRarityID.Blue;
             item.channel = true;
             item.UseSound = item.UseSound = SoundID.Item5;
