@@ -9,6 +9,8 @@ namespace DarknessUnbound.Items.Materials.Souls
         {
             if (Main.player[npc.FindClosestPlayer()].ZoneUnderworldHeight && Main.rand.NextBool(5))
                 Item.NewItem(npc.getRect(), ModContent.ItemType<SoulOfFire>());
+            if (Main.player[npc.FindClosestPlayer()].ZoneSnow && Main.rand.NextBool(5))
+                Item.NewItem(npc.getRect(), ModContent.ItemType<SoulOfFrost>());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace DarknessUnbound.Items.Materials.Souls
@@ -12,6 +13,7 @@ namespace DarknessUnbound.Items.Materials.Souls
             DisplayName.SetDefault("Soul of Frost");
             Tooltip.SetDefault("'The essence of frozen creatures'");
 
+            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 4));
             ItemID.Sets.ItemIconPulse[item.type] = true;
             ItemID.Sets.ItemNoGravity[item.type] = true;
             ItemID.Sets.AnimatesAsSoul[item.type] = true;
