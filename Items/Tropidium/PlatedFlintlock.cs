@@ -13,7 +13,7 @@ namespace DarknessUnbound.Items.Tropidium
         public override void SafeSetDefaults()
         {
             item.CloneDefaults(ItemID.FlintlockPistol);
-            item.useAnimation = item.useTime = 20;
+            item.useAnimation = item.useTime = 15;
             item.useStyle = ItemUseStyleID.HoldingOut;
             item.damage = 25;
             item.ranged = true;
@@ -22,6 +22,7 @@ namespace DarknessUnbound.Items.Tropidium
             item.shoot = AmmoID.Bullet;
             item.noMelee = true;
             item.autoReuse = true;
+            item.shootSpeed = 24f;
         }
 
         public override void AddRecipes()

@@ -22,7 +22,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.aiStyle = 0;
             projectile.friendly = true;
             projectile.hostile = false;
-            projectile.tileCollide = true;
+            projectile.tileCollide = false;
             projectile.netUpdate = true;
             projectile.arrow = true;
             projectile.magic = true;
@@ -43,7 +43,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
 
                 // necessary unless you want every projectile in the world to come forth
                 if (distanceToNPC <= 300 && distanceToNPC >= 0) 
-                    projectile.velocity = projectile.DirectionTo(npc.Center) * 30;
+                    projectile.velocity += projectile.DirectionTo(npc.Center) * 2;
             }
         }
     }
