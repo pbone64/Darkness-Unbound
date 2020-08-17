@@ -1,5 +1,6 @@
 ﻿using DarknessUnbound.Helpers;
 using DarknessUnbound.Projectiles;
+using DarknessUnbound.Projectiles.Weapons.Melee;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DarknessUnbound.Projectiles
+namespace DarknessUnbound.Projectiles.Weapons.Melee
 {
     public class TerraMK2Blade : ModProjectile
     {
