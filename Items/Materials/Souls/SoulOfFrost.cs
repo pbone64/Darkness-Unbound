@@ -5,12 +5,12 @@ using Terraria.ID;
 
 namespace DarknessUnbound.Items.Materials.Souls
 {
-    public class SoulOfFire : DarknessItem
+    public class SoulOfFrost : DarknessItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Soul of Fire");
-            Tooltip.SetDefault("'The essence of burning creatures'");
+            DisplayName.SetDefault("Soul of Frost");
+            Tooltip.SetDefault("'The essence of frozen creatures'");
 
             ItemID.Sets.ItemIconPulse[item.type] = true;
             ItemID.Sets.ItemNoGravity[item.type] = true;
@@ -25,7 +25,8 @@ namespace DarknessUnbound.Items.Materials.Souls
             item.rare = ItemRarityID.Orange;
         }
 
-        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) => Lighting.AddLight(item.position, Color.Orange.ToVector3());
+        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) => Lighting.AddLight(item.position, Color.SkyBlue.ToVector3());
+
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(255, 255, 255, 50);
