@@ -23,7 +23,7 @@ namespace DarknessUnbound.Items.Tropidium
             item.channel = true;
             item.UseSound = item.UseSound = SoundID.Item5;
             item.crit = 10;
-            item.shootSpeed = 25f;
+            item.shootSpeed = 8f;
             item.shoot = ModContent.ProjectileType<FishHookLaunched>();
             item.autoReuse = true;
             item.noMelee = true;

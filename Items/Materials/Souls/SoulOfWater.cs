@@ -31,7 +31,7 @@ namespace DarknessUnbound.Items.Materials.Souls
 
         public override Color? GetAlpha(Color lightColor)
         {
-            return new Color(255, 255, 255, 50);
+            return new Color(255, 255, 255, 20);
         }
     }
 }
