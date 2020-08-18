@@ -30,7 +30,7 @@ namespace DarknessUnbound.Items.Materials.Souls
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) => Lighting.AddLight(item.position, Color.Orange.ToVector3());
         public override Color? GetAlpha(Color lightColor)
         {
-            return new Color(255, 255, 255, 50);
+            return new Color(255, 255, 255, 20);
         }
     }
 }
