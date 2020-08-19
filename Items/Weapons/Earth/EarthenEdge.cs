@@ -6,8 +6,12 @@ using Terraria.ModLoader;
 
 namespace DarknessUnbound.Items.Weapons.Earth
 {
-    public class BladeOfEarth : DarknessItem
+    public class EarthenEdge : DarknessItem
     {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("Earthen Edge");
+        }
         public override void SafeSetDefaults()
         {
             item.damage = 75;

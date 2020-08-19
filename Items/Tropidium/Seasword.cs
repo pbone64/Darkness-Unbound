@@ -1,3 +1,4 @@
+using DarknessUnbound.Projectiles.Tropidium;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,8 +16,6 @@ namespace DarknessUnbound.Items.Tropidium
 		{
 			item.damage = 35;
 			item.melee = true;
-			//item.width = 40;
-			//item.height = 40;
 			item.useTime = 15;
 			item.useAnimation = 15;
 			item.useStyle = ItemUseStyleID.SwingThrow;
@@ -26,7 +25,7 @@ namespace DarknessUnbound.Items.Tropidium
 			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
 			item.useTurn = true;
-			item.scale = 1.5f;
+			//item.shoot = ModContent.ProjectileType<SeaswordSlice>();
 		}
         public override void AddRecipes() 
 		{
