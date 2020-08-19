@@ -22,7 +22,7 @@ namespace DarknessUnbound.Items.Accessories.LunarEmblems
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.magicDamage += 0.25f;
-            player.magicDamage += 10;
+            player.magicCrit += 10;
         }
 
         public override void AddRecipes()
