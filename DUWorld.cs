@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Generation;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -16,13 +13,29 @@ namespace DarknessUnbound
     public class DUWorld : ModWorld
     {
         public static bool restlessShadows;
+        public static bool lastRestlessShadows;
 
         public override void Initialize()
         {
             restlessShadows = false;
-            //DarknessUnbound.SET_UNDERTABLE_DIALOGUE("Hello, world! I'm blue and you're a large blongus! This line is here to test the line breaking", ModContent.GetTexture("DarknessUnbound/NPCs/Bosses/EthosOfTerraria/TerrariaEthos"));
         }
 
+        public override void PreUpdate()
+        {
+            if (restlessShadows != lastRestlessShadows)
+            {
+                int mult = lastRestlessShadows == true ? -1 : 1;
+                Main.expertDamage += 1.5f * mult;
+                Main.expertKnockBack -= 0.25f * mult;
+                Main.expertDebuffTime += 1.25f * mult;
+                Main.expertLife += 1.45f * mult;
+                Main.expertNPCDamage += 1.25f * mult;
+            }
+
+            lastRestlessShadows = restlessShadows;
+        }
+
+        #region WORLDGEN
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
         {
             int genIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
@@ -322,6 +335,7 @@ namespace DarknessUnbound
             mod.Logger.Debug("Error occured while walling in melted ice biome: " + e.ToString());
             mod.Logger.Debug("Melted ice biome generation has been aborted");
         }
+        #endregion
 
         public override TagCompound Save() => new TagCompound() {
             { "RestlessShadows", restlessShadows }
