@@ -23,6 +23,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.tileCollide = true;
             projectile.penetrate = 2;
             projectile.aiStyle = 2;
+            aiType = ProjectileID.ThrowingKnife;
 
         }
         public override void AI()

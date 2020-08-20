@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
