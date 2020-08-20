@@ -28,7 +28,7 @@ namespace DarknessUnbound.Items
             try {
                 item.Size = Main.itemTexture[item.type].Size();
             }
-            catch (Exception e) {
+            catch (NullReferenceException e) {
                 item.Size = Vector2.Zero;
                 return;
             }

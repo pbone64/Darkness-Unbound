@@ -14,16 +14,17 @@ namespace DarknessUnbound.Items.Weapons.Earth
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 75;
-            item.crit = 8;
+            item.damage = 84;
+            item.crit = 12;
             item.melee = true;
-            item.useTime = item.useAnimation = 26;
+            item.useTime = item.useAnimation = 24;
             item.value = Item.sellPrice(0, 1, 0, 0);
             item.useStyle = ItemUseStyleID.SwingThrow;
             item.autoReuse = true;
             item.UseSound = SoundID.Item1;
             item.rare = ItemRarityID.LightRed;
             item.scale = 1.45f;
+            item.knockBack = 6;
         }
 
         public override void MeleeEffects(Player player, Rectangle hitbox) => Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, 1, 0, 0, 0, Color.White);

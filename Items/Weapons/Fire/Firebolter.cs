@@ -16,7 +16,8 @@ namespace DarknessUnbound.Items.Weapons.Fire
 
         public override void SafeSetDefaults()
         {
-			item.damage = 42;
+			item.damage = 56;
+            item.crit = 6;
 			item.ranged = true;
 			item.useTime = 18;
 			item.useAnimation = 18;
