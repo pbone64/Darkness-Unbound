@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,6 +9,7 @@ namespace DarknessUnbound
     {
         public bool eldritchCore;
         public bool icyStone;
+        public bool frostfireNecklace;
 
         public int eldritchCore_CountDown;
 
@@ -22,6 +22,7 @@ namespace DarknessUnbound
         {
             eldritchCore = false;
             icyStone = false;
+            frostfireNecklace = false;
 
             eldritchCore_CountDown--;
             if (eldritchCore_CountDown < 0) eldritchCore_CountDown = 0;
@@ -54,17 +55,16 @@ namespace DarknessUnbound
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
             if (icyStone && item.magic) OnHit_IcyStone(target);
+            if (frostfireNecklace && (item.summon || item.sentry)) OnHit_IcyStone(target);
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
             if (icyStone && proj.magic) OnHit_IcyStone(target);
+            if (frostfireNecklace && (proj.minion || proj.sentry)) OnHit_IcyStone(target);
         }
 
-        private void OnHit_IcyStone(NPC target)
-        {
-            target.AddBuff(BuffID.Frostburn, Main.rand.Next(2, 7) * 60);
-        }
+        private void OnHit_IcyStone(NPC target) => target.AddBuff(BuffID.Frostburn, Main.rand.Next(2, 7) * 60);
         #endregion
     }
 }

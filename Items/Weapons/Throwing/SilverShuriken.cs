@@ -8,7 +8,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing
     {
         public override void SafeSetDefaults()
         {
-            item.damage = 22;
+            item.damage = 18;
             item.thrown = true;
             item.useTime = item.useAnimation = 13;
             item.knockBack = 0.5f;
