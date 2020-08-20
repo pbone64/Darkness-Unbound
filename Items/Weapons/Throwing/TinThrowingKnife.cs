@@ -1,0 +1,35 @@
+﻿using DarknessUnbound.Projectiles.Weapons.Throwing;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace DarknessUnbound.Items.Weapons.Throwing
+{
+    public class TinThrowingKnife : DarknessItem
+    {
+        public override void SafeSetDefaults()
+        {
+            item.damage = 16;
+            item.thrown = true;
+            item.useTime = item.useAnimation = 12;
+            item.knockBack = 2.5f;
+            item.maxStack = 999;
+            item.consumable = true;
+            item.noMelee = true;
+            item.noUseGraphic = true;
+            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.autoReuse = true;
+            item.UseSound = SoundID.Item1;
+            item.shoot = ModContent.ProjectileType<TinThrowingKnife>();
+            item.shootSpeed = 12f;
+        }
+
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.TinBar, 2);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(this, 50);
+            recipe.AddRecipe();
+        }
+    }
+}
