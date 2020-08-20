@@ -47,7 +47,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             dust.noGravity = true;
 
         }
-        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        /*public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) //chain code
         {
             Texture2D chain = ModContent.GetTexture("DarknessUnbound/ChainTextures/TropidiumChain");
             Player player = Main.player[projectile.owner];
@@ -70,7 +70,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             }
 
             return true;
-        }
+        }*/
         public override bool PreKill(int timeLeft)
         {
 

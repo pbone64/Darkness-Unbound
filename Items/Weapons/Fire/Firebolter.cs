@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace DarknessUnbound.Items.Weapons.Fire
 {
-    public class FlamingRepeater : DarknessItem
+    public class Firebolter : DarknessItem
     {
         public override void SetStaticDefaults()
         {

@@ -12,7 +12,7 @@ namespace DarknessUnbound.Items.Weapons
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Terra Edge");
+            DisplayName.SetDefault("Terra Blade MKII");
             Tooltip.SetDefault("Rapidly shoots homing beams");
         }
 
