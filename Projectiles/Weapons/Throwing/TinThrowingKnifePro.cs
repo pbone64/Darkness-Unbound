@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,6 +12,13 @@ namespace DarknessUnbound.Projectiles.Weapons.Throwing
         public override void SetDefaults()
         {
             projectile.CloneDefaults(ProjectileID.ThrowingKnife);
+            aiType = ProjectileID.ThrowingKnife;
+        }
+
+        public override bool PreAI()
+        {
+            projectile.ai[0] -= 0.5f;
+            return true;
         }
 
         public override void Kill(int timeLeft)
