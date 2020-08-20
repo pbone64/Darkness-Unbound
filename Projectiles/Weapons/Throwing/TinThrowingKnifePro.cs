@@ -17,7 +17,7 @@ namespace DarknessUnbound.Projectiles.Weapons.Throwing
 
         public override bool PreAI()
         {
-            projectile.ai[0] -= 0.5f;
+            projectile.ai[0] -= 0.35f;
             return true;
         }
 
