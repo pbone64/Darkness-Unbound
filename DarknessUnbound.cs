@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -154,6 +155,8 @@ namespace DarknessUnbound
 
                 SkyManager.Instance["DarknessUnbound:EthosSky"] = new EthosP2Sky();
                 SkyManager.Instance["DarknessUnbound:PillarSky"] = new PillarSky();
+
+                Filters.Scene["Melt"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(new Color(81, 182, 217)).UseSecondaryColor(Color.CornflowerBlue).UseIntensity(1.4f), EffectPriority.High);
             }
         }
     }
