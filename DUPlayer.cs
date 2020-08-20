@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,6 +12,11 @@ namespace DarknessUnbound
         public bool icyStone;
 
         public int eldritchCore_CountDown;
+
+        public override void Initialize()
+        {
+            //SkyManager.Instance.Activate("DarknessUnbound:PillarSky");
+        }
 
         public override void ResetEffects()
         {

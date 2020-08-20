@@ -153,6 +153,7 @@ namespace DarknessUnbound
                 UNDERTABLE_BOX = ModContent.GetTexture("DarknessUnbound/TextBox");
 
                 SkyManager.Instance["DarknessUnbound:EthosSky"] = new EthosP2Sky();
+                SkyManager.Instance["DarknessUnbound:PillarSky"] = new PillarSky();
             }
         }
     }
