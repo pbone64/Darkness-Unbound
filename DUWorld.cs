@@ -32,12 +32,12 @@ namespace DarknessUnbound
                     // We can inline the world generation code like this, but if exceptions happen within this code 
                     // the error messages are difficult to read, so making methods is better. This is called an anonymous method.
                     progress.Message = "Melting ice...";
-                    MeltIce();
+                    MeltIce(progress);
                 }));
             }
         }
 
-        private void MeltIce()
+        private void MeltIce(GenerationProgress progress)
         {
             bool foundAnchor = false;
             bool foundEnd = false;
@@ -58,6 +58,7 @@ namespace DarknessUnbound
                     else continue;
                 }
             }
+            progress.Value += 0.05f;
 
             for (int i = 0; i < Main.maxTilesX; i++)
             {
@@ -72,6 +73,7 @@ namespace DarknessUnbound
                     else continue;
                 }
             }
+            progress.Value += 0.05f;
 
             if (!foundAnchor) mod.Logger.Error("Anchor for melted ice biome not found. Generation could not be completed");
             if (!foundEnd) mod.Logger.Error("End for melted ice biome not found. Generation could not be completed");
@@ -80,6 +82,7 @@ namespace DarknessUnbound
             {
                 mod.Logger.Debug("Anchor and end for melted ice biome found. Starting generation");
                 mod.Logger.Debug("Let the record show that the anchor is X: " + anchor.X.ToString() + ", Y: " + anchor.Y.ToString() + " And that the end is X: " + end.X.ToString() + ", Y: " + end.Y.ToString());
+                progress.Value += 0.1f; // 0.2
 
                 byte modX = (byte)WorldGen.genRand.Next(20, 48);
                 byte modY = (byte)WorldGen.genRand.Next(4, 8);
@@ -92,8 +95,8 @@ namespace DarknessUnbound
                 mod.Logger.Debug("Range: " + range.ToString());
 
                 // LIQUIDS
-                mod.Logger.Debug("Handeling liquids and clearing for the melted ice biome");
-
+                mod.Logger.Debug("Handeling liquids and convering the melted ice biome");
+                progress.Value += 0.1f; // 0.3;
                 try
                 {
                     for (int i = anchor.X; i < end.X; i++)
@@ -110,8 +113,55 @@ namespace DarknessUnbound
 
                             if (tile.type == TileID.Ash) break;
 
-                            WorldGen.TileRunner(i, j, 16, 12, -1);
+                            if ((tile.type == TileID.WoodBlock && tile.type == TileID.WoodenBeam) || Main.tileContainer[tile.type])
+                            {
+                                tile.type = 0;
+                                tile.active(false);
+
+                                continue;
+                            }
+
+                            tile.type = TileID.IceBlock;
                             tile.wall = WallID.None;
+                        }
+                    }
+                    // LIQUIDS
+
+                    progress.Value += 0.05f;    // 0.35
+                    for (int i = anchor.X; i < end.X; i += WorldGen.genRand.Next(5, 9))
+                    {
+                        for (int j = anchor.Y; j < Main.maxTilesY; j += WorldGen.genRand.Next(5, 9))
+                        {
+                            Tile tile = Main.tile[i, j];
+
+                            if (Main.rand.NextBool(3))
+                            {
+                                ushort type = 0;
+                                switch (Main.rand.Next(11))
+                                {
+                                    case 0:
+                                    case 1:
+                                        type = 162;
+                                        break;
+                                    case 2:
+                                    case 3:
+                                    case 4:
+                                    case 5:
+                                    case 6:
+                                        type = TileID.SnowBlock;
+                                        break;
+                                    case 7:
+                                    case 8:
+                                    case 9:
+                                        type = TileID.IceBlock;
+                                        break;
+                                    case 10:
+                                        type = TileID.Slush;
+                                        break;
+                                }
+
+                                WorldGen.TileRunner(i, j, WorldGen.genRand.Next(10, 14) - (type == TileID.Slush ? 5 : 0), 14, type);
+                            }
                         }
                     }
                 }
@@ -120,10 +170,13 @@ namespace DarknessUnbound
                     MeltedIce_HandleError(e);
                     return;
                 }
+
+                #region removed
                 // LIQUIDS DONE
 
                 // WALLING IN
-                mod.Logger.Debug("Walling in the melted ice biome");
+                /*mod.Logger.Debug("Walling in the melted ice biome");
+                progress.Value += 0.1f; // 0.45
 
                 int goneDownTo = anchor.Y;
                 int goneDownToEnd = end.Y;
@@ -183,43 +236,9 @@ namespace DarknessUnbound
                 {
                     MeltedIce_HandleError(e);
                     return;
-                }
+                }*/
                 // WALLED IN
-
-                // TERRAIN
-                mod.Logger.Debug("Making the melted ice terrain");
-
-                int counter = 0;
-
-                try
-                {
-                    while (true)
-                    {
-                        Point pos = new Point(anchor.X + WorldGen.genRand.Next(range), anchor.Y + Main.rand.Next(goneDownTo) - 200);
-                        Tile tile = Framing.GetTileSafely(pos.X, pos.Y);
-                        if (tile.type == TileID.BlueDungeonBrick || tile.type == TileID.GreenDungeonBrick || tile.type == TileID.PinkDungeonBrick)
-                            continue;
-                        if (tile.wall == WallID.BlueDungeonUnsafe || tile.wall == WallID.BlueDungeonSlabUnsafe || tile.wall == WallID.BlueDungeonTileUnsafe ||
-                            tile.wall == WallID.GreenDungeonUnsafe || tile.wall == WallID.GreenDungeonSlabUnsafe || tile.wall == WallID.GreenDungeonTileUnsafe ||
-                            tile.wall == WallID.PinkDungeonUnsafe || tile.wall == WallID.PinkDungeonSlabUnsafe || tile.wall == WallID.PinkDungeonTileUnsafe)
-                            continue;
-
-                        if (WorldGen.genRand.NextBool(140))
-                        {
-                            WorldGen.TileRunner(pos.X, pos.Y, WorldGen.genRand.Next(28, 36), WorldGen.genRand.Next(28, 39), TileID.IceBrick, true);
-
-                            counter++;
-                        }
-
-                        if (counter >= 255) break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    MeltedIce_HandleError(e);
-                    return;
-                }
-                // TERRAIN DONE
+                #endregion
 
                 // FREEING SPACE
                 /*mod.Logger.Debug("Freeing space in the melted ice biome");
@@ -261,7 +280,7 @@ namespace DarknessUnbound
 
                 try
                 {
-                    Point pos = new Point(anchor.X + (range / 2), (goneDownTo - 100));
+                    Point pos = new Point(anchor.X + (range / 2), (Main.maxTilesY - 300));
                     WorldGen.TileRunner(pos.X, pos.Y, 28, 46, TileID.LunarBlockVortex, true);
                 }
                 catch (Exception e)
@@ -269,13 +288,14 @@ namespace DarknessUnbound
                     MeltedIce_HandleError(e);
                     return;
                 }
+                progress.Value += 0.05f; // 0.5f;
 
                 // KILLING UNDERWORLD
                 mod.Logger.Debug("Cooling the underworld");
 
                 try
                 {
-                    for (int j = goneDownTo + 20; j < Main.maxTilesY; j++)
+                    for (int j = Main.maxTilesY - 200 + 20; j < Main.maxTilesY; j++)
                     {
                         for (int i = anchor.X; i < end.X; i++)
                         {
