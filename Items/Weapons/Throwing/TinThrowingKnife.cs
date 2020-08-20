@@ -19,7 +19,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing
             item.useStyle = ItemUseStyleID.SwingThrow;
             item.autoReuse = true;
             item.UseSound = SoundID.Item1;
-            item.shoot = ModContent.ProjectileType<TinThrowingKnife>();
+            item.shoot = ModContent.ProjectileType<TinThrowingKnifePro>();
             item.shootSpeed = 12f;
         }
 
