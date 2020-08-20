@@ -24,8 +24,14 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.penetrate = 2;
             projectile.aiStyle = 2;
             aiType = ProjectileID.ThrowingKnife;
-
         }
+
+        public override bool PreAI()
+        {
+            projectile.ai[0] -= 0.45f;
+            return true;
+        }
+
         public override void AI()
         {
             Dust dust = Dust.NewDustPerfect(projectile.Center, ModContent.DustType<TropidiumGlow>(), null, 0, Color.White, 0.5f);
