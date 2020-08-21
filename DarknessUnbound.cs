@@ -156,7 +156,7 @@ namespace DarknessUnbound
                 SkyManager.Instance["DarknessUnbound:EthosSky"] = new EthosP2Sky();
                 SkyManager.Instance["DarknessUnbound:PillarSky"] = new PillarSky();
 
-                Filters.Scene["Melt"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(new Color(81, 182, 217)).UseSecondaryColor(Color.CornflowerBlue).UseIntensity(1.4f), EffectPriority.High);
+                Filters.Scene["Melt"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(Color.RoyalBlue).UseIntensity(1.21f), EffectPriority.High);
             }
         }
     }

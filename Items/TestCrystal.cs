@@ -29,6 +29,7 @@ namespace DarknessUnbound.Items
         {
             Filters.Scene.Activate("Melt");
             Filters.Scene["Melt"].GetShader().UseProgress(60);
+
             if (player.altFunctionUse == 2)
             {
                 Filters.Scene["Melt"].Deactivate();
