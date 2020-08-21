@@ -68,7 +68,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing
             recipe.AddIngredient(ItemID.Shuriken, 75);
             recipe.AddIngredient(ItemID.VialofVenom);
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
+            recipe.SetResult(this, 75);
             recipe.AddRecipe();
         }
     }
