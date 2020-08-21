@@ -17,7 +17,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing.Unconsumable
             item.useStyle = ItemUseStyleID.SwingThrow;
             item.autoReuse = true;
             item.UseSound = SoundID.Item1;
-            item.shoot = ModContent.ProjectileType<DarkDaggerPro>();
+            item.shoot = ModContent.ProjectileType<MuscleTearerPro>();
             item.shootSpeed = 14f;
             item.rare = ItemRarityID.Blue;
         }
