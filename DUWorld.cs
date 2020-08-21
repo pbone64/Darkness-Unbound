@@ -22,14 +22,29 @@ namespace DarknessUnbound
 
         public override void PreUpdate()
         {
-            if (restlessShadows != lastRestlessShadows)
+            if (restlessShadows && Main.expertMode)
             {
-                int mult = lastRestlessShadows == true ? -1 : 1;
-                Main.expertDamage += 1.5f * mult;
-                Main.expertKnockBack -= 0.25f * mult;
-                Main.expertDebuffTime += 1.25f * mult;
-                Main.expertLife += 1.45f * mult;
-                Main.expertNPCDamage += 1.25f * mult;
+                Main.expertDamage = 3f;
+                Main.expertKnockBack = 0.5f;
+                Main.expertDebuffTime = 3.5f;
+                Main.expertLife = 3f;
+                Main.expertNPCDamage = 3f;
+            }
+            else if (Main.expertMode)
+            {
+                Main.expertDamage = 2f;
+                Main.expertKnockBack = 0.9f;
+                Main.expertDebuffTime = 2f;
+                Main.expertLife = 2f;
+                Main.expertNPCDamage = 1.5f;
+            }
+            else
+            {
+                Main.expertDamage = 1f;
+                Main.expertKnockBack = 1f;
+                Main.expertDebuffTime = 1f;
+                Main.expertLife = 1f;
+                Main.expertNPCDamage = 1f;
             }
 
             lastRestlessShadows = restlessShadows;
