@@ -10,7 +10,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing
         {
             item.damage = 20;
             item.thrown = true;
-            item.useTime = item.useAnimation = 15;
+            item.useTime = item.useAnimation = 18;
             item.knockBack = 4f;
             item.maxStack = 999;
             item.consumable = true;
