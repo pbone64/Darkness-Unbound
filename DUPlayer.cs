@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DarknessUnbound.Items.Consumables;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,6 +18,13 @@ namespace DarknessUnbound
         public override void Initialize()
         {
             //SkyManager.Instance.Activate("DarknessUnbound:PillarSky");
+        }
+
+        public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
+        {
+            Item item = new Item();
+            item.SetDefaults(ModContent.ItemType<RestlessShadows>());
+            items.Add(item);
         }
 
         public override void ResetEffects()
