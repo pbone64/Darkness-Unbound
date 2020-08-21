@@ -20,6 +20,7 @@ namespace DarknessUnbound.Items.Accessories.LunarEmblems
         public override void SafeSetDefaults()
         {
             item.accessory = true;
+            item.defense = 12;
             item.value = Item.sellPrice(0, 15);
             item.rare = ItemRarityID.Purple;
         }
