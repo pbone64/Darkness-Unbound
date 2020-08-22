@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DarknessUnbound.Items.Weapons.Throwing.Unconsumable;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -50,19 +51,39 @@ namespace DarknessUnbound
             lastRestlessShadows = restlessShadows;
         }
 
+        public override void PostWorldGen()
+        {
+            for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
+            {
+                Chest chest = Main.chest[chestIndex];
+                if (chest != null && Main.tile[chest.x, chest.y].type == TileID.Containers && Main.tile[chest.x, chest.y].frameX == 2 * 36)
+                {
+                    if (Main.rand.NextBool(2))
+                    {
+                        for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+                        {
+                            if (chest.item[inventoryIndex].type == ItemID.None)
+                            {
+                                chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Bashosen>());
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         #region WORLDGEN
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
         {
-            int genIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
-            if (genIndex != -1)
+
+            /*tasks.Add(new PassLegacy("Post Terrain", delegate (GenerationProgress progress)
             {
-                tasks.Add(new PassLegacy("Post Terrain", delegate (GenerationProgress progress) {
-                    // We can inline the world generation code like this, but if exceptions happen within this code 
-                    // the error messages are difficult to read, so making methods is better. This is called an anonymous method.
-                    progress.Message = "Melting ice...";
-                    MeltIce(progress);
-                }));
-            }
+                // We can inline the world generation code like this, but if exceptions happen within this code 
+                // the error messages are difficult to read, so making methods is better. This is called an anonymous method.
+                progress.Message = "Melting ice...";
+                MeltIce(progress);
+            }));*/
         }
 
         private void MeltIce(GenerationProgress progress)
