@@ -10,7 +10,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing.Unconsumable
 
         public override void SafeSetDefaults()
         {
-            item.damage = 35;
+            item.damage = 33;
             item.crit = 6;
             item.thrown = true;
             item.useTime = item.useAnimation = 12;
