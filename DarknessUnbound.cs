@@ -13,7 +13,7 @@ using Terraria.UI.Chat;
 
 namespace DarknessUnbound
 {
-    public class DarknessUnbound : Mod
+    public partial class DarknessUnbound : Mod
     {
         public static bool showEthosOptions;
         public Rectangle spareRect = default;
@@ -158,6 +158,8 @@ namespace DarknessUnbound
 
                 Filters.Scene["Melt"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(Color.RoyalBlue).UseIntensity(1.21f), EffectPriority.High);
             }
+
+            Detours();
         }
     }
 }

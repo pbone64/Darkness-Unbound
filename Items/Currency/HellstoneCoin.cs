@@ -150,22 +150,6 @@ namespace DarknessUnbound.Items.Currency
 
 		public override void GrabRange(Player player, ref int grabRange) => grabRange += player.goldRing ? Item.coinGrabRange : 0;
 
-        public override bool GrabStyle(Player player)
-        {
-			Vector2 vector5 = new Vector2(item.position.X + (float)(item.width / 2), item.position.Y + (float)(item.height / 2));
-			float num31 = item.Center.X - vector5.X;
-			float num30 = item.Center.Y - vector5.Y;
-			float num29 = (float)Math.Sqrt(num31 * num31 + num30 * num30);
-			num29 = 12f / num29;
-			num31 *= num29;
-			num30 *= num29;
-			int num25 = 5;
-			item.velocity.X = (item.velocity.X * (float)(num25 - 1) + num31) / (float)num25;
-			item.velocity.Y = (item.velocity.Y * (float)(num25 - 1) + num30) / (float)num25;
-
-			return true;
-        }
-
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) => false;
 
         public override void AddRecipes()
