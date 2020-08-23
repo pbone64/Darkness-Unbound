@@ -23,6 +23,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing.Unconsumable
             item.shoot = ModContent.ProjectileType<DawnsEndPro>();
             item.shootSpeed = 14f;
             item.rare = ItemRarityID.Orange;
+            item.value = Item.sellPrice(0, 4);
         }
 
         public override void AddRecipes()

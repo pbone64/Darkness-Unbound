@@ -22,6 +22,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing.Unconsumable
             item.shoot = ModContent.ProjectileType<BashosenPro>();
             item.shootSpeed = 10f;
             item.rare = ItemRarityID.Green;
+            item.value = Item.sellPrice(0, 1, 75);
         }
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)

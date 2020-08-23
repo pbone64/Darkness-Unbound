@@ -1,4 +1,5 @@
 ﻿using DarknessUnbound.Projectiles.Weapons.Throwing;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,6 +21,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing.Unconsumable
             item.shoot = ModContent.ProjectileType<SharpBranchPro>();
             item.shootSpeed = 14f;
             item.rare = ItemRarityID.Orange;
+            item.value = Item.sellPrice(0, 0, 54);
         }
 
         public override void AddRecipes()

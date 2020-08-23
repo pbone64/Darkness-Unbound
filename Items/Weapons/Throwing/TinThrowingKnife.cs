@@ -1,4 +1,5 @@
 ﻿using DarknessUnbound.Projectiles.Weapons.Throwing;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,6 +22,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing
             item.UseSound = SoundID.Item1;
             item.shoot = ModContent.ProjectileType<TinThrowingKnifePro>();
             item.shootSpeed = 12f;
+            item.value = Item.sellPrice(0, 0, 0, 5);
         }
 
         public override void AddRecipes()

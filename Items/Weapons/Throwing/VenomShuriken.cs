@@ -33,6 +33,7 @@ namespace DarknessUnbound.Items.Weapons.Throwing
             item.shoot = ModContent.ProjectileType<VenomShurikenPro>();
             item.shootSpeed = 13f;
             item.rare = ItemRarityID.LightRed;
+            item.value = Item.sellPrice(0, 0, 2, 0);
         }
 
         public override bool ConsumeItem(Player player) => player.altFunctionUse == 2 ? Main.rand.NextBool(3) : Main.rand.NextBool(2);
