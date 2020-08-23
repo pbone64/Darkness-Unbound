@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace DarknessUnbound.Items.Currency
 {
 	//TODO: [IL] Terraria.Item.UpdateItem - if (type == ModContent.ItemType<HellstoneCoin>()) num44 = 100000000f;
-	//TODO: [Detour(?)] Terraria.itemText.NewText (ValueToName) - Coin text logic for hellstone coin (May be easier and better to detour the method, check if it's a coin, and rewrite the coin text system.)
+	//TODO: [Detour(?)] Terraria.ItemText.NewText (ValueToName) - Coin text logic for hellstone coin (May be easier and better to detour the method, check if it's a coin, and rewrite the coin text system.)
 	//TODO: Clean up Update code (taken from Vanilla).
 	//TODO: Make coin item stats only be displayed if the player hsa a Coin Gun in their inventory.
 	//TODO: [Detour/IL] Terraria.Main.MoveCoins - Will look at what this does later.
