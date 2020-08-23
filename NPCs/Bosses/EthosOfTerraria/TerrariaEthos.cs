@@ -65,11 +65,12 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
         public const int ArenaHeight = 1200;
         public static int ArenaWidthHalf { get => ArenaWidth / 2; }
         public static int ArenaHeightHalf { get => ArenaHeight / 2; }
-        public Vector2 ArenaTopCorner { get => new Vector2(ArenaWidthHalf, ArenaHeightHalf) + npc.Center; }
+        public Vector2 ArenaBottomCorner { get => npc.Center + new Vector2(ArenaWidthHalf, ArenaHeightHalf); }
+        public Vector2 ArenaTopCorner { get => npc.Center - new Vector2(ArenaWidthHalf, ArenaHeightHalf); }
 
         public AttackProfile Attack_Ring = default;
         public AttackProfile Attack_RandomBullets = default;
-        public AttackProfile Attack_LaserRain = default;
+        public AttackProfile Attack_Shotgun = default;
 
         private bool drawRing = true;
         private bool dialogue = true;
@@ -119,7 +120,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             {
                 Attack_Ring = new AttackProfile(30, () => AttackMethod_THERING());
                 Attack_RandomBullets = new AttackProfile(45, () => AttackMethod_RandomBullets());
-                Attack_LaserRain = new AttackProfile(60, () => AttackMethod_LaserRain());
+                Attack_Shotgun = new AttackProfile(60, () => AttackMethod_Shotgun());
 
                 initialized = true;
             }
@@ -209,7 +210,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 {
                     case 0: attack = Attack_Ring; break;
                     case 1: attack = Attack_RandomBullets; break;
-                    case 2: attack = Attack_LaserRain; break;
+                    case 2: attack = Attack_Shotgun; break;
 
                 }
 
@@ -269,9 +270,15 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             }
         }
 
-        private void AttackMethod_LaserRain()
+        private void AttackMethod_Shotgun()
         {
             InAttackTimer1++;
+
+            if (InAttackTimer1 % 18 == 0)
+            {
+                for (int i = -1; i < 2; i++)
+                    Projectile.NewProjectile(npc.Center, npc.DirectionTo(Main.player[npc.FindClosestPlayer()].Center).RotatedBy(i * MathHelper.Pi / 6f) * 10f, ModContent.ProjectileType<EthosLeaf>(), 85, 1f);
+            }
 
             if (InAttackTimer1 >= 180 / (cheating ? 2f : 1))
             {
@@ -556,7 +563,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 {
                     Main.musicFade[i] = 0f;
                 }
-                if (string.IsNullOrEmpty(DarknessUnbound.UNDERTABLE_DIALOGUE)) DialogueTimer++;
+                //if (string.IsNullOrEmpty(DarknessUnbound.UNDERTABLE_DIALOGUE)) DialogueTimer++;
             }
 
             if (!string.IsNullOrEmpty(text)) chat(text);
@@ -601,7 +608,7 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                             Main.PlaySound(SoundID.NPCDeath62, npc.Center);
                             for (int i = 0; i < 9; i++)
                             {
-                                Projectile proj = Projectile.NewProjectileDirect(npc.Center + Main.rand.NextVector2Square(24, 24), Vector2.Zero, ModContent.ProjectileType<Explosion>(), 0, 1f);
+                                Projectile proj = Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ModContent.ProjectileType<Explosion>(), 0, 1f);
                                 proj.hostile = false;
                                 proj.friendly = false;
                             }
@@ -646,7 +653,6 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             }
         }
 
-        [Obsolete]
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
             spriteBatch.End();
@@ -692,7 +698,6 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
                 drawPos.X += ArenaWidth;
                 spriteBatch.Draw(Main.blackTileTexture, drawPos, null, color, 0f, new Vector2(portalDepth / 2, portalWidth / 2), 1f, SpriteEffects.None, 0f);
             }
-            ChatManager.DrawColorCodedString(spriteBatch, Main.fontDeathText, saidHpPercentages.ToString(), Vector2.One * 10, Color.White, 0, default, Vector2.One * 3);
         }
 
         public override bool CheckDead()
@@ -739,13 +744,13 @@ namespace DarknessUnbound.NPCs.Bosses.EthosOfTerraria
             PassiveDialogueState = (float)reader.ReadDouble();
         }
 
-        private void chat(string text, bool sad = false)
+        private void chat(string text, bool dramatic = false, bool sad = false)
         {
-            /*if (Main.netMode == NetmodeID.SinglePlayer)
-                Main.NewText($"<Ethos of Terraria> {text}" + (dramatic ? "!!" : ""), (anger ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
+            if (Main.netMode == NetmodeID.SinglePlayer)
+                Main.NewText($"<Ethos of Terraria> {text}" + (dramatic ? "!!" : ""), (cheating ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
             else
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"<Ethos of Terraria> {text}"), (anger ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));*/
-            DarknessUnbound.SET_UNDERTABLE_DIALOGUE(text, Main.npcTexture[npc.type], sad, cheating);
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"<Ethos of Terraria> {text}"), (cheating ? Color.Red : sad ? Color.DarkGray : Color.LimeGreen * (dramatic ? 1.85f : 0.95f)));
+            //DarknessUnbound.SET_UNDERTABLE_DIALOGUE(text, Main.npcTexture[npc.type], sad, cheating);
         }
 
         private void copypasta(string[] text, int expectedSaid)
