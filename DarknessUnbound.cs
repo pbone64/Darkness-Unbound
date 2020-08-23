@@ -1,4 +1,3 @@
-using DarknessUnbound.Helpers;
 using DarknessUnbound.Skies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +7,6 @@ using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace DarknessUnbound
@@ -86,7 +84,7 @@ namespace DarknessUnbound
                 float width = UNDERTABLE_BOX.Width;
                 float halfWidth = width / 2f;
                 float height = UNDERTABLE_BOX.Height;
-                float halfHeight = height / 2f; 
+                float halfHeight = height / 2f;
                 float headWidth = UNDERTABLE_HEADTEX.Width;
                 char[] textSplit = UNDERTABLE_DIALOGUE.ToCharArray();
                 float delay = (UNDERTABLE_ANGER ? 3f : 6f);
@@ -158,6 +156,100 @@ namespace DarknessUnbound
 
                 Filters.Scene["Melt"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(Color.RoyalBlue).UseIntensity(1.21f), EffectPriority.High);
             }
+        }
+
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Vertebrae, 5);
+            recipe.AddTile(TileID.WorkBenches);
+            recipe.SetResult(ItemID.Leather);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Leather, 3);
+            recipe.AddIngredient(ItemID.Silk, 8);
+            recipe.AddIngredient(ItemID.SwiftnessPotion);
+            recipe.AddTile(TileID.Loom);
+            recipe.SetResult(ItemID.HermesBoots);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Leather, 3);
+            recipe.AddIngredient(ItemID.Silk, 8);
+            recipe.AddIngredient(ItemID.FlipperPotion);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.Flipper);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Leather, 3);
+            recipe.AddIngredient(ItemID.Silk, 8);
+            recipe.AddIngredient(ItemID.IceBlock, 100);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.IceSkates);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Leather, 3);
+            recipe.AddIngredient(ItemID.Silk, 8);
+            recipe.AddIngredient(ItemID.Daybloom);
+            recipe.AddIngredient(ItemID.Blinkroot);
+            recipe.AddIngredient(ItemID.Waterleaf);
+            recipe.AddIngredient(ItemID.Shiverthorn);
+            recipe.AddIngredient(ItemID.Moonglow);
+            recipe.AddIngredient(ItemID.Deathweed);
+            recipe.AddIngredient(ItemID.Fireblossom);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.FlowerBoots);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Leather, 3);
+            recipe.AddIngredient(ItemID.Silk, 8);
+            recipe.AddIngredient(ItemID.WaterWalkingPotion);
+            recipe.AddTile(TileID.Loom);
+            recipe.SetResult(ItemID.WaterWalkingBoots);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddRecipeGroup("IronBar", 12);
+            recipe.AddIngredient(ItemID.LifeCrystal);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.BandofRegeneration);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddRecipeGroup("IronBar", 8);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.Aglet);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Vine, 6);
+            recipe.AddIngredient(ItemID.Ruby);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.AnkletoftheWind);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Bone, 25);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.BoneSword);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.Bone, 25);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.BonePickaxe);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddRecipeGroup("IronBar", 10);
+            recipe.AddIngredient(ItemID.GillsPotion);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(ItemID.DivingHelmet);
+            recipe.AddRecipe();
         }
     }
 }
