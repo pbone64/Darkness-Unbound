@@ -32,7 +32,6 @@ namespace DarknessUnbound.Projectiles.Weapons.Throwing
             {
                 for (int i = 0; i < 12; i++)
                     Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 37, projectile.velocity.X / 2f, projectile.velocity.Y / 2f, 175, default, 2.25f).noGravity = true;
-                Main.NewText("D");
             }
             if (Main.GameUpdateCount % 2 == 0) Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 27).noGravity = true;
 
