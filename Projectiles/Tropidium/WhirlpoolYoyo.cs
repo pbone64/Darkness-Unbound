@@ -32,19 +32,18 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.aiStyle = 99;
         }
 
-        [Obsolete]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
 
             Texture2D spiral = mod.GetTexture("Projectiles/Tropidium/WhirlpoolSpiral");
             spriteBatch.Draw(spiral, projectile.Center - Main.screenPosition, new Rectangle(0, 0, spiral.Width, spiral.Height), Color.White, rot, new Vector2(spiral.Width, spiral.Height) / 2f, 1f, SpriteEffects.None, 0f);
 
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
             return true;
         }
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 
         public override void PostAI()
         {

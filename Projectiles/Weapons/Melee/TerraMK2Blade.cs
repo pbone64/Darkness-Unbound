@@ -1,5 +1,6 @@
 ﻿using DarknessUnbound.Helpers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
@@ -9,10 +10,15 @@ namespace DarknessUnbound.Projectiles.Weapons.Melee
 {
     public class TerraMK2Blade : ModProjectile
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
+            ProjectileID.Sets.Homing[projectile.type] = true;
+            ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 10;
             ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+        }
+        public override void SetDefaults()
+        {
             projectile.netUpdate = true;
             projectile.melee = true;
             projectile.ignoreWater = true;
@@ -25,10 +31,14 @@ namespace DarknessUnbound.Projectiles.Weapons.Melee
             projectile.alpha = 245;
         }
 
+        private Color green = new Color(13, 112, 41);
+        private Color blue = new Color(0, 97, 180);
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public override void AI()
         {
             Player player = Main.player[Main.myPlayer];
@@ -56,9 +66,23 @@ namespace DarknessUnbound.Projectiles.Weapons.Melee
             }
 
             //colors
-            Color green = new Color(13, 112, 41);
-            Color blue = new Color(0, 97, 180);
             Lighting.AddLight(projectile.Center / 16f, new AnimatedColor(green, blue).LightingColor());
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        {
+            Color projCol = new AnimatedColor(green, blue).GetColor();
+            Texture2D tex = Main.projectileTexture[projectile.type];
+            Rectangle rectangle = new Rectangle(0, 0, tex.Width, tex.Height);
+
+            for (int d = 0; d > ProjectileID.Sets.TrailCacheLength[projectile.type]; d++)
+            {
+                Vector2 oldloc = projectile.oldPos[d];
+                float oldang = projectile.oldRot[d];
+                spriteBatch.Draw(tex, projectile.position - Main.screenPosition, new Rectangle?(rectangle), projCol, oldang, oldloc, 1f, SpriteEffects.None, 0f);
+            }
+
+            return true;
         }
     }
 }

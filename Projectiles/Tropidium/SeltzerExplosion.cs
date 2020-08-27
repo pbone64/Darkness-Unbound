@@ -19,26 +19,28 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.netUpdate = true;
             projectile.timeLeft = 60;
             projectile.penetrate = -1;
-            projectile.alpha = 300;
+            projectile.alpha = 250;
             projectile.magic = true;
             projectile.tileCollide = false;
         }
 
-        [Obsolete]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        { 
+        {
+            Texture2D exploder = Main.projectileTexture[projectile.type];
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
-            return true;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Draw(exploder, projectile.Center - Main.screenPosition, new Rectangle(0, 0, exploder.Width, exploder.Height), projectile.GetAlpha(default), projectile.rotation, new Vector2(exploder.Width, exploder.Height) / 2f, 1f, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            return false;
         }
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 
         public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             //Texture2D tex = mod.GetTexture("Projectiles/Tropidium/SeltzerExplosion");
             projectile.rotation += MathHelper.ToRadians(15);
-            projectile.alpha -= 6;
+            projectile.alpha -= (int)projectile.ai[0];
         }
 
         public override Color? GetAlpha(Color lightColor)

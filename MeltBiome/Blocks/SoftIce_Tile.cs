@@ -17,11 +17,12 @@ namespace DarknessUnbound.MeltBiome.Blocks
 
             Main.tileMergeDirt[Type] = true;
             Main.tileBlendAll[Type] = true;
-
+            
             Main.tileSpelunker[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;
             Main.tileLighted[Type] = true;
+            TileID.Sets.Ices[Type] = true;
 
             drop = ModContent.ItemType<SoftIce>();
             dustType = 217;
