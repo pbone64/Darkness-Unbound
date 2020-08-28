@@ -1,1 +1,18 @@
-Darkness Unbound is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Darkness Unbound is a HUGE content mod that makes the game, harder, more fun, longer, bigger, and stronger, too.
+It features:
+ - 1 boss
+ - X items
+ - X npcs
+ - Throwing class!
+ - 1 biome
+ - 1 new difficulty mode: Restless Shadows
+ - 1 new coin: Hellstone Coin
+
+
+ == Credits ==
+  - pbone: Main developer. Designer, spriter
+  - Blockaroz: Main spriter. Developer, designer
+  - caligulasAquariam: Main designer. Spriter, writer
+  - Stevie: Developer
+  - Oli.H: Code help
+  - Terry N. Muse: Writing a lotta code
