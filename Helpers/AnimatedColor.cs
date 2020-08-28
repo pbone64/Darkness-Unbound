@@ -10,7 +10,6 @@ namespace DarknessUnbound.Helpers
         public Color color1;
         public Color color2;
         public float speedModifier;
-        private bool multiColor;
 
         /// <param name="c1">The first color</param>
         /// <param name="c2">The second color</param>
@@ -21,7 +20,6 @@ namespace DarknessUnbound.Helpers
             color1 = c1;
             color2 = c2;
             speedModifier = speedMod;
-            multiColor = false;
         }
 
         /// <param name="colors">The colors in this AniamtedColor</param>
@@ -32,12 +30,11 @@ namespace DarknessUnbound.Helpers
             color1 = default;
             color2 = default;
             speedModifier = speedMod;
-            multiColor = true;
         }
 
         public Color GetColor()
         {
-            if (!multiColor)
+            if (Colors == default)
                 return Color.Lerp(color1, color2, (float)(Math.Sin(Main.GameUpdateCount / speedModifier) + 1f) / 2f);
             else
             {
