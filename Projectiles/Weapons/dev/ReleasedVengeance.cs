@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DarknessUnbound.Projectiles.Weapons.Melee
+namespace DarknessUnbound.Projectiles.Weapons.dev
 {
     public class ReleasedVengeance : ModProjectile
     {

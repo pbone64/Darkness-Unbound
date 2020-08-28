@@ -1,11 +1,11 @@
-﻿using DarknessUnbound.Projectiles.Weapons.Melee;
+﻿using DarknessUnbound.Projectiles.Weapons.dev;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DarknessUnbound.Items.Weapons.pbone
+namespace DarknessUnbound.Items.Weapons.dev
 {
     public class TrappedVengeance : DarknessItem
     {
@@ -17,7 +17,7 @@ namespace DarknessUnbound.Items.Weapons.pbone
         public override void SafeSetDefaults()
         {
             item.damage = 666666;
-            item.crit = 66;
+            item.crit = 62;
             item.melee = true;
             item.useTime = 6;
             item.useAnimation = 6;
@@ -31,7 +31,6 @@ namespace DarknessUnbound.Items.Weapons.pbone
             item.shootSpeed = 8f;
             item.scale = 2f;
         }
-
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
