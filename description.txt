@@ -7,6 +7,7 @@ It features:
  - 1 biome
  - 1 new difficulty mode: Restless Shadows
  - 1 new coin: Hellstone Coin
+ - Recipes for many vanilla items
 
 
  == Credits ==

@@ -133,6 +133,10 @@ namespace DarknessUnbound
                     SET_UNDERTABLE_DIALOGUE("", default);
                 }
             }
+
+            /*spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, 100, 100), new AnimatedColor(new Color[] { Color.Red, Color.Blue }).GetColor());
+            spriteBatch.Draw(Main.blackTileTexture, new Rectangle(100, 100, 100, 100), new AnimatedColor(Color.Red, Color.Blue).GetColor());
+            spriteBatch.Draw(Main.blackTileTexture, new Rectangle(100, 0, 100, 100), new AnimatedColor(new Color[] { Color.Blue, Color.Aqua, Color.SeaGreen, Color.Green }).GetColor());*/
         }
 
         public static void SET_UNDERTABLE_DIALOGUE(string text, Texture2D headTex, bool sad = false, bool anger = false)
