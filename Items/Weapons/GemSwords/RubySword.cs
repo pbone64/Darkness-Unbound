@@ -14,7 +14,7 @@ namespace DarknessUnbound.Items.Weapons.GemSwords
             item.useTime = 26;
             item.useAnimation = 26;
             item.useStyle = ItemUseStyleID.SwingThrow;
-            item.knockBack = 4;
+            item.knockBack = 6f;
             item.value = Item.sellPrice(0, 0, 60);
             item.rare = ItemRarityID.Green;
             item.UseSound = SoundID.Item1;
