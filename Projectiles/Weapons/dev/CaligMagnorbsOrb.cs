@@ -101,11 +101,13 @@ namespace DarknessUnbound.Projectiles.Weapons.dev
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write(Timer);
+            writer.Write(ReturnTransition);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             Timer = reader.Read();
+            ReturnTransition = reader.ReadBoolean();
         }
     }
 }

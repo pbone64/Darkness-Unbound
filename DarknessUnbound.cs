@@ -160,6 +160,8 @@ namespace DarknessUnbound
                 SkyManager.Instance["DarknessUnbound:PillarSky"] = new PillarSky();
 
                 Filters.Scene["Melt"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(Color.RoyalBlue).UseIntensity(1.21f), EffectPriority.High);
+                //Filters.Scene["DUPillar"] = new Filter(new ScreenShaderData("Solar").UseColor(Color.Indigo).UseIntensity(10f).UseProgress(1f), EffectPriority.VeryHigh);
+                
             }
         }
 

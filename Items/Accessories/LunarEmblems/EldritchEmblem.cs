@@ -8,7 +8,7 @@ namespace DarknessUnbound.Items.Accessories.LunarEmblems
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("'It beats with an otherwordly power...'" +
+            Tooltip.SetDefault("'It glows with an otherwordly power...'" +
                              "\n20% increased damage" +
                              "\n10% increased critical strike chance" +
                              "\nIncreases your max number of minions by 1" +

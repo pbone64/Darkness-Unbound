@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -18,6 +19,7 @@ namespace DarknessUnbound
         public override void Initialize()
         {
             //SkyManager.Instance.Activate("DarknessUnbound:PillarSky");
+            //Filters.Scene["DUPillar"].Activate(default);
         }
 
         public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
