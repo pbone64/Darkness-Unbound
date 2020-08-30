@@ -16,7 +16,7 @@ namespace DarknessUnbound.Items
         //NPC.NewNPC((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y + 20, (ushort)ModContent.NPCType<FloatingDummy>(), 0);
         public override void SafeSetDefaults()
         {
-            item.useTime = item.useAnimation = 5;
+            item.useTime = item.useAnimation = 10;
             item.useStyle = ItemUseStyleID.HoldingOut;
             item.noUseGraphic = true;
             item.value = Item.buyPrice(0, 0, 90, 0);
@@ -25,7 +25,7 @@ namespace DarknessUnbound.Items
         public override bool UseItem(Player player)
         {
             if (player.altFunctionUse == 0)
-                NPC.NewNPC((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y + 2, (ushort)ModContent.NPCType<FloatingDummy>(), 0);
+                NPC.NewNPC((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y + 20, (ushort)ModContent.NPCType<FloatingDummy>(), 0);
             return true;
         }
         public override bool AltFunctionUse(Player player) => true;

@@ -44,8 +44,8 @@ namespace DarknessUnbound.Projectiles.Tropidium
                 float distanceToNPC = (npc.Center - projectile.Center).Length();
 
                 // necessary unless you want every projectile in the world to come forth
-                if (distanceToNPC <= 300 && distanceToNPC >= 0) 
-                    projectile.velocity += projectile.DirectionTo(npc.Center) * 2;
+                if (distanceToNPC <= 600 && distanceToNPC >= 0) 
+                    projectile.velocity += projectile.DirectionTo(npc.Center);
             }
         }
     }

@@ -42,7 +42,7 @@ namespace DarknessUnbound.NPCs
 
             float length = Vector2.Distance(Main.MouseWorld, npc.Center);
 
-            if (length < 33 && player.altFunctionUse == 2)
+            if (length < 25 && player.altFunctionUse == 2)
                 npc.active = false;
 
             if (!npc.active)
@@ -50,11 +50,27 @@ namespace DarknessUnbound.NPCs
                 Main.PlaySound(SoundID.NPCHit16, npc.Center);
                 for (int i = 0; i < 41; i++)
                 {
-                    Vector2 spin = new Vector2(0, 2).RotatedBy(((MathHelper.Pi * 2f) / 40) * i);
-                    Dust dust = Dust.NewDustPerfect(npc.Center, 204, spin, 0, Color.White, 0.75f);
+                    Vector2 spin = new Vector2(0, 3).RotatedBy((MathHelper.TwoPi / 40) * i);
+                    Dust dust = Dust.NewDustPerfect(npc.Center, 204, spin, 0, Color.Yellow, 1f);
+                    dust.color = default;
                 }
             }
         }
-        public override bool CheckActive() => false;
+
+        public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
+        {
+            Player player = Main.player[Main.myPlayer];
+            bool hover = npc.getRect().Contains((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y);
+            Texture2D outline = ModContent.GetTexture("DarknessUnbound/Effects/PuppetGlow");
+            Vector2 pos1 = npc.position - Main.screenPosition;
+            Vector2 posFinal = new Vector2(pos1.X, pos1.Y + 4);
+            Rectangle rec = new Rectangle(0, 0, npc.width, npc.height);
+            SpriteEffects flipper = npc.direction > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            if (npc.type == ModContent.NPCType<FloatingDummy>() && hover == true)
+            {
+                spriteBatch.Draw(outline, posFinal, new Rectangle?(rec), Color.Yellow, npc.rotation, Vector2.Zero, 1f, flipper, 1f);
+            }
+        }
     }
 }
