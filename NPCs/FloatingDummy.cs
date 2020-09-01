@@ -39,13 +39,17 @@ namespace DarknessUnbound.NPCs
             npc.timeLeft = int.MaxValue;
         }
         private float spin { get => npc.ai[0]; set => npc.ai[0] = value; }
+        private float spin2 { get => npc.ai[1]; set => npc.ai[1] = value; }
         public override void AI()
         {
             Player player = Main.LocalPlayer;
 
-            spin += MathHelper.ToRadians(1);
+            spin += MathHelper.ToRadians(0.15f);
             if (spin > MathHelper.ToRadians(360))
                 spin = 0;
+            spin2 += MathHelper.ToRadians(0.325f);
+            if (spin2 > MathHelper.ToRadians(360))
+                spin2 = 0;
 
             if (npc.timeLeft < 10)
                 npc.timeLeft = int.MaxValue;
@@ -86,23 +90,20 @@ namespace DarknessUnbound.NPCs
             {
                 spriteBatch.Draw(outline, posFinal, new Rectangle?(rec), Color.Yellow, npc.rotation, Vector2.Zero, 1f, flipper, 1f);
             }
-        }
 
-        public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
-        {
-            Rectangle rec = new Rectangle(0, 0, 1920, 1920);
-            Texture2D massiveDong = ModContent.GetTexture("DarknessUnbound/Effects/Galaxy");
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
-            spriteBatch.Draw(massiveDong, npc.Center - Main.screenPosition, new Rectangle?(rec), new AnimatedColor(Color.DarkBlue, Color.DarkMagenta).GetColor(), spin, new Vector2(960, 960), 1f, SpriteEffects.None, 1f);
-
+            /*Rectangle rec2 = new Rectangle(0, 0, 1920, 1920);
+            Texture2D baseTex = ModContent.GetTexture("DarknessUnbound/Effects/Galaxy");
+            Texture2D altTex = ModContent.GetTexture("DarknessUnbound/Effects/Galaxy2");
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
-            spriteBatch.Draw(massiveDong, npc.Center - Main.screenPosition, new Rectangle?(rec), new AnimatedColor(Color.LightCyan, Color.Purple).GetColor(), spin, new Vector2(960, 960), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(baseTex, npc.Center - Main.screenPosition, new Rectangle?(rec2), Color.BlueViolet * 0.1f, -spin, new Vector2(960, 960), 1f, SpriteEffects.FlipHorizontally, 1f);
+            spriteBatch.Draw(baseTex, npc.Center - Main.screenPosition, new Rectangle?(rec2), Color.CornflowerBlue, spin2, new Vector2(960, 960), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(altTex, npc.Center - Main.screenPosition, new Rectangle?(rec2), Color.LightCyan * 0.2f, spin2, new Vector2(960, 960), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(altTex, npc.Center - Main.screenPosition, new Rectangle?(rec2), Color.LightSteelBlue, spin, new Vector2(960, 960), 1f, SpriteEffects.None, 1f);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
-            return true;
+            */
         }
     }
 }
