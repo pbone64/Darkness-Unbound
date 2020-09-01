@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DarknessUnbound.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -33,9 +34,12 @@ namespace DarknessUnbound.NPCs
             npc.chaseable = true;
             npc.lifeRegen = 90000;
         }
-
+        private float spin = 0;
         public override void AI()
         {
+            spin += MathHelper.ToRadians(1);
+            if (spin > MathHelper.ToRadians(360))
+                spin = 0;
             Player player = Main.player[Main.myPlayer];
             if (npc.life < npc.lifeMax)
                 npc.life += npc.lifeMax;
@@ -71,6 +75,22 @@ namespace DarknessUnbound.NPCs
             {
                 spriteBatch.Draw(outline, posFinal, new Rectangle?(rec), Color.Yellow, npc.rotation, Vector2.Zero, 1f, flipper, 1f);
             }
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
+        {
+            Rectangle rec = new Rectangle(0, 0, 1920, 1920);
+            Texture2D massiveDong = ModContent.GetTexture("DarknessUnbound/Effects/Galaxy");
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Draw(massiveDong, npc.Center - Main.screenPosition, new Rectangle?(rec), new AnimatedColor(Color.DarkBlue, Color.DarkMagenta).GetColor(), spin, new Vector2(960, 960), 1f, SpriteEffects.None, 1f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Draw(massiveDong, npc.Center - Main.screenPosition, new Rectangle?(rec), new AnimatedColor(Color.LightCyan, Color.Purple).GetColor(), spin, new Vector2(960, 960), 1f, SpriteEffects.None, 1f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            return true;
         }
     }
 }
