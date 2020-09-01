@@ -101,7 +101,7 @@ namespace DarknessUnbound.Projectiles.Weapons.Throwing
 			TargetWhoAmI = target.whoAmI; // Set the target whoAmI
 			projectile.velocity =
 				(target.Center - projectile.Center) *
-				0.75f; // Change velocity based on delta center of targets (difference between entity centers)
+				0.75f; // Change velocity projectiled on delta center of targets (difference between entity centers)
 			projectile.netUpdate = true; // netUpdate this javelin
 			target.AddBuff(BuffID.Poisoned, 600); // Adds the ExampleJavelin debuff for a very small DoT
 
