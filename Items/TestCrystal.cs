@@ -19,7 +19,7 @@ namespace DarknessUnbound.Items
         public override void SafeSetDefaults()
         {
             item.useStyle = ItemUseStyleID.HoldingUp;
-            item.useTime = item.useAnimation = 90;
+            item.useTime = item.useAnimation = 15;
             item.rare = ItemRarityID.Cyan;
             item.accessory = true;
         }

@@ -15,7 +15,7 @@ namespace DarknessUnbound.Projectiles.Weapons.Melee
             ProjectileID.Sets.Homing[projectile.type] = true;
             ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 10;
-            ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+            ProjectileID.Sets.TrailingMode[projectile.type] = 2;
         }
         public override void SetDefaults()
         {
@@ -67,22 +67,6 @@ namespace DarknessUnbound.Projectiles.Weapons.Melee
 
             //colors
             Lighting.AddLight(projectile.Center / 16f, new AnimatedColor(green, blue).LightingColor());
-        }
-
-        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        {
-            Color projCol = new AnimatedColor(green, blue).GetColor();
-            Texture2D tex = Main.projectileTexture[projectile.type];
-            Rectangle rectangle = new Rectangle(0, 0, tex.Width, tex.Height);
-
-            for (int d = 0; d > ProjectileID.Sets.TrailCacheLength[projectile.type]; d++)
-            {
-                Vector2 oldloc = projectile.oldPos[d];
-                float oldang = projectile.oldRot[d];
-                spriteBatch.Draw(tex, projectile.position - Main.screenPosition, new Rectangle?(rectangle), projCol, oldang, oldloc, 1f, SpriteEffects.None, 0f);
-            }
-
-            return true;
         }
     }
 }
