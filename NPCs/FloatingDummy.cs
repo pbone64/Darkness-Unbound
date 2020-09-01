@@ -1,4 +1,5 @@
 ﻿using DarknessUnbound.Helpers;
+using DarknessUnbound.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,7 +18,9 @@ namespace DarknessUnbound.NPCs
             NPCID.Sets.ExcludedFromDeathTally[npc.type] = true;
             NPCID.Sets.TeleportationImmune[npc.type] = true;
         }
+
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => false;
+
         public override void SetDefaults()
         {
             Player player = Main.player[Main.myPlayer];
@@ -33,20 +36,22 @@ namespace DarknessUnbound.NPCs
             npc.noGravity = true;
             npc.chaseable = true;
             npc.lifeRegen = 90000;
+            npc.timeLeft = int.MaxValue;
         }
-        private float spin = 0;
+        private float spin { get => npc.ai[0]; set => npc.ai[0] = value; }
         public override void AI()
         {
+            Player player = Main.LocalPlayer;
+
             spin += MathHelper.ToRadians(1);
             if (spin > MathHelper.ToRadians(360))
                 spin = 0;
-            Player player = Main.player[Main.myPlayer];
-            if (npc.life < npc.lifeMax)
-                npc.life += npc.lifeMax;
+
+            if (npc.timeLeft < 10)
+                npc.timeLeft = int.MaxValue;
 
             float length = Vector2.Distance(Main.MouseWorld, npc.Center);
-
-            if (length < 25 && player.altFunctionUse == 2)
+            if (length < 25 && player.altFunctionUse == 2 && player.HeldItem.type == ModContent.ItemType<FloatingDummyItem>())
                 npc.active = false;
 
             if (!npc.active)
@@ -59,6 +64,12 @@ namespace DarknessUnbound.NPCs
                     dust.color = default;
                 }
             }
+        }
+
+        public override bool CheckDead()
+        {
+            npc.life = npc.lifeMax;
+            return false;
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
@@ -76,6 +87,7 @@ namespace DarknessUnbound.NPCs
                 spriteBatch.Draw(outline, posFinal, new Rectangle?(rec), Color.Yellow, npc.rotation, Vector2.Zero, 1f, flipper, 1f);
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
             Rectangle rec = new Rectangle(0, 0, 1920, 1920);
