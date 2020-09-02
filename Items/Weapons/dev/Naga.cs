@@ -34,9 +34,10 @@ namespace DarknessUnbound.Items.Weapons.dev
             item.useTime = 10;
             item.useAnimation = item.useTime;
             item.tileBoost = 3;
-            item.rare = ItemRarityID.Purple;
+            item.rare = ItemRarityID.Red;
             item.value = Item.buyPrice(1, 0, 0, 0);
             item.useTurn = true;
+            item.crit = 50;
         }
         public override Color? GetAlpha(Color lightColor)
         {
@@ -65,19 +66,18 @@ namespace DarknessUnbound.Items.Weapons.dev
                 }
                 if (isDashing == true && player.altFunctionUse == 2 && player.controlUseItem == false)
                 {
-                    player.itemLocation = player.MountedCenter;
-                    player.itemRotation += rot * 2;
+                    player.itemAnimation = 1;
+                    player.itemTime = 1;
+                    item.noUseGraphic = true;
                     player.velocity.X = (player.DirectionTo(target.Center) * 30).X;
                     player.velocity.Y = (player.DirectionTo(target.Center) * 30).Y;
                     player.immune = true;
-                    player.immuneTime = 10;
-                    player.itemAnimation = 1;
-                    player.itemTime = 1;
+                    player.immuneTime = 5;
                     item.UseSound = null;
                     dashCoolDown++;
                     for (float d = 0; d < 41; d++)//dust
                     {
-                        Vector2 circle = new Vector2(player.MountedCenter.X, player.MountedCenter.Y - 35).RotatedBy((MathHelper.TwoPi / 40) * d, player.MountedCenter);
+                        Vector2 circle = new Vector2(player.MountedCenter.X, player.MountedCenter.Y - 30).RotatedBy((MathHelper.TwoPi / 40) * d, player.MountedCenter);
                         Dust dust = Dust.NewDustPerfect(circle, 107, Vector2.Zero, default, green, 0.75f);
                         dust.color = green;
                         dust.noLight = true;
@@ -89,6 +89,7 @@ namespace DarknessUnbound.Items.Weapons.dev
                 {
                     item.UseSound = SoundID.Item1;
                     item.useTime = 10;
+                    item.noUseGraphic = false;
                 }
             }
             #endregion
@@ -135,7 +136,7 @@ namespace DarknessUnbound.Items.Weapons.dev
 
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
-            if (isDashing == true)
+            if (isDashing == true && player.altFunctionUse == 2)
             {
                 crit = true;
                 player.immuneTime = 50;
