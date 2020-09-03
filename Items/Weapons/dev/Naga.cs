@@ -20,7 +20,7 @@ namespace DarknessUnbound.Items.Weapons.dev
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Right click to dash into enemies" +
-                "\n25% increased damage at full combo");
+                "\n25% increased damage after 15 hits");
         }
         public override void SetDefaults()
         {
@@ -52,17 +52,23 @@ namespace DarknessUnbound.Items.Weapons.dev
             float progress = 1f / player.itemAnimation;
             float rot = dir ? MathHelper.TwoPi : -MathHelper.TwoPi;
             player.itemRotation += rot;
-            player.itemLocation = new Vector2(player.MountedCenter.X, player.MountedCenter.Y - 2);
+            player.itemLocation = new Vector2(player.MountedCenter.X, player.MountedCenter.Y - 3);
             #endregion 
 
-            #region abilities
             //if (player.controlUseItem && player.altFunctionUse == 0)
-            foreach (NPC target in from NPC n in Main.npc where n.active && !n.friendly && !n.dontTakeDamage && !n.immortal && n.lifeMax > 5 select n) //npc tracking
+            #region slashdash
+
+            foreach (NPC target in from NPC n in Main.npc where n.active && !n.friendly && !n.dontTakeDamage && !n.immortal && n.lifeMax > 5 select n) //a pbone(tm) special
             {
                 float range = Vector2.Distance(player.Center, target.Center);
-                if (range <= 690 && player.altFunctionUse == 2 && player.controlUseItem == false && target.CanBeChasedBy(player) && dashCoolDown <= 0)
+                float range2 = Vector2.Distance(Main.MouseWorld, target.Center);
+                if (range <= 690 && range2 <= 420 && player.altFunctionUse == 2 && player.controlUseItem == false && target.CanBeChasedBy(player) && dashCoolDown <= 0)
                 {
                     isDashing = true;
+                }
+                if (player.altFunctionUse == 0 && isDashing == true)
+                {
+                    isDashing = false;
                 }
                 if (isDashing == true && player.altFunctionUse == 2 && player.controlUseItem == false)
                 {
@@ -85,14 +91,13 @@ namespace DarknessUnbound.Items.Weapons.dev
                     }
                     Vector2 position = new Vector2(player.MountedCenter.X - 50, player.MountedCenter.Y - 50);
                 }
-                else if (isDashing == false)
+                if (isDashing == false)
                 {
                     item.UseSound = SoundID.Item1;
-                    item.useTime = 10;
                     item.noUseGraphic = false;
                 }
+                #endregion
             }
-            #endregion
         }
 
         public override void UpdateInventory(Player player)
@@ -141,7 +146,10 @@ namespace DarknessUnbound.Items.Weapons.dev
                 crit = true;
                 player.immuneTime = 50;
                 player.velocity = -player.DirectionTo(target.Center) * 14;
+                //sounds
                 Main.PlaySound(SoundID.Item71, player.MountedCenter);
+                Main.PlaySound(SoundID.Item60, player.MountedCenter);
+
                 isDashing = false;
                 for (int h = 0; h < 61; h++)
                 {
