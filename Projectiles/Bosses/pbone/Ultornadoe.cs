@@ -9,7 +9,7 @@ namespace DarknessUnbound.Projectiles.Bosses.pbone
 {
     public class Ultornadoe : ModProjectile
     {
-		public override string Texture => "Terraria/Projectile_" + ProjectileID.Sharknado;
+		//public override string Texture => "Terraria/Projectile_" + ProjectileID.Sharknado;
 
         public override void SetStaticDefaults()
         {
@@ -24,7 +24,7 @@ namespace DarknessUnbound.Projectiles.Bosses.pbone
 			projectile.scale = 1f;
 		}
 
-		public override Color? GetAlpha(Color lightColor) => Main.DiscoColor;
+		public override Color? GetAlpha(Color lightColor) => Main.DiscoColor * 0.9f;
 
 		public int target;
 
