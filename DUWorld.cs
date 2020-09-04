@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.Generation;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
@@ -14,10 +14,14 @@ namespace DarknessUnbound
     public class DUWorld : ModWorld
     {
         public static bool restlessShadows;
+        public static bool saidThatCultistsAreSealedByMoons;
+        public static bool saidCultistMessage;
 
         public override void Initialize()
         {
             restlessShadows = false;
+            saidThatCultistsAreSealedByMoons = false;
+            saidCultistMessage = false;
         }
 
         public override void PreUpdate()
@@ -45,6 +49,20 @@ namespace DarknessUnbound
                 Main.expertDebuffTime = 1f;
                 Main.expertLife = 1f;
                 Main.expertNPCDamage = 1f;
+            }
+
+            if (saidThatCultistsAreSealedByMoons && !saidCultistMessage && NPC.downedHalloweenKing && NPC.downedHalloweenTree && NPC.downedChristmasIceQueen && NPC.downedChristmasSantank && NPC.downedChristmasTree)
+            {
+                string chat = "The ancient cultists are free!";
+                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(chat, Color.Cyan);
+                else
+                {
+                    NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(chat), Color.Cyan);
+                    saidCultistMessage = true;
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+
+                saidCultistMessage = true;
             }
         }
 
@@ -371,12 +389,16 @@ namespace DarknessUnbound
         #endregion
 
         public override TagCompound Save() => new TagCompound() {
-            { "RestlessShadows", restlessShadows }
+            { "RestlessShadows", restlessShadows },
+            { "CultistMessage", saidThatCultistsAreSealedByMoons },
+            { "SaidCultistMessage", saidCultistMessage }
         };
 
         public override void Load(TagCompound tag)
         {
             restlessShadows = tag.GetBool("RestlessShadows");
+            saidThatCultistsAreSealedByMoons = tag.GetBool("CultistMessage");
+            saidCultistMessage = tag.GetBool("SaidCultistMessage");
         }
     }
 }

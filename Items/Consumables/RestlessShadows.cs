@@ -48,7 +48,8 @@ namespace DarknessUnbound.Items.Consumables
             bool flag = true;
             foreach (NPC npc in from NPC n in Main.npc where n.boss select n)
             {
-                flag = true;
+                flag = false;
+                break;
             }
             return flag;
         }
