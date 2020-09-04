@@ -12,7 +12,7 @@ using Terraria.UI.Chat;
 
 namespace DarknessUnbound
 {
-    public class DarknessUnbound : Mod
+    public partial class DarknessUnbound : Mod
     {
         public static bool showEthosOptions;
         public Rectangle spareRect = default;
@@ -163,6 +163,8 @@ namespace DarknessUnbound
                 //Filters.Scene["DUPillar"] = new Filter(new ScreenShaderData("Solar").UseColor(Color.Indigo).UseIntensity(10f).UseProgress(1f), EffectPriority.VeryHigh);
                 
             }
+
+            Load_MethodSwap();
         }
 
         public override void AddRecipes()

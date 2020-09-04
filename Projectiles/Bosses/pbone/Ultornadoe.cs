@@ -32,6 +32,8 @@ namespace DarknessUnbound.Projectiles.Bosses.pbone
 		{
 			if (!NPC.AnyNPCs(ModContent.NPCType<NPCs.Bosses.pbone.pbone>())) projectile.Kill();
 
+			projectile.position.Y += Main.player[target].velocity.Y;
+
 			int num519 = 45;
 			int num520 = 85;
 			float num521 = 2f;

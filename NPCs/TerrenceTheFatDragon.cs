@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,6 +12,7 @@ namespace DarknessUnbound.NPCs
         {
             npc.Size = new Vector2(64, 128);
             npc.lifeMax = int.MaxValue;
+            npc.knockBackResist = 0f;
         }
     }
 }

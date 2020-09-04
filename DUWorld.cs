@@ -14,7 +14,6 @@ namespace DarknessUnbound
     public class DUWorld : ModWorld
     {
         public static bool restlessShadows;
-        public static bool lastRestlessShadows;
 
         public override void Initialize()
         {
@@ -47,8 +46,6 @@ namespace DarknessUnbound
                 Main.expertLife = 1f;
                 Main.expertNPCDamage = 1f;
             }
-
-            lastRestlessShadows = restlessShadows;
         }
 
         public override void PostWorldGen()
