@@ -61,8 +61,7 @@ namespace DarknessUnbound.Items.Weapons.dev
             foreach (NPC target in from NPC n in Main.npc where n.active && !n.friendly && !n.dontTakeDamage && !n.immortal && n.lifeMax > 5 select n) //a pbone(tm) special
             {
                 float range = Vector2.Distance(player.Center, target.Center);
-                float range2 = Vector2.Distance(Main.MouseWorld, target.Center);
-                if (range <= 690 && range2 <= 420 && player.altFunctionUse == 2 && player.controlUseItem == false && target.CanBeChasedBy(player) && dashCoolDown <= 0)
+                if (range <= 690 && player.altFunctionUse == 2 && player.controlUseItem == false && target.CanBeChasedBy(player) && dashCoolDown <= 0)
                 {
                     isDashing = true;
                 }
@@ -150,7 +149,6 @@ namespace DarknessUnbound.Items.Weapons.dev
                 Main.PlaySound(SoundID.Item71, player.MountedCenter);
                 Main.PlaySound(SoundID.Item60, player.MountedCenter);
 
-                isDashing = false;
                 for (int h = 0; h < 61; h++)
                 {
                     float max = Math.Max(target.width, target.height) / 12;
@@ -160,7 +158,8 @@ namespace DarknessUnbound.Items.Weapons.dev
                     dust.noLight = true;
                 }
             }
-            
+            isDashing = false;
+
             dashCoolDown = 60; //1second
 
             comboTimer = 180;
