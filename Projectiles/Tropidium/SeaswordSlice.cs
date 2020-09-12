@@ -33,26 +33,25 @@ namespace DarknessUnbound.Projectiles.Tropidium
             projectile.tileCollide = false;
         }
 
-        [Obsolete]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
+            Texture2D tex = Main.projectileTexture[projectile.type];
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, new Rectangle(0, 0, tex.Width, tex.Height), projectile.GetAlpha(default), projectile.rotation, new Vector2(tex.Width, tex.Height) / 2f, 1f, SpriteEffects.None, 0f);
 
-            return true;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.ZoomMatrix);
+
+            return false;
         }
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
 
-            projectile.rotation = player.itemRotation;
-
-            //Dust dust = Dust.NewDustPerfect(player.Center, ModContent.DustType<TropidiumGlow>(), null, 0, Color.White, 1f);
-            //dust.noGravity = true;
-            //dust.velocity += projectile.rotation.ToRotationVector2() * 5;
+            projectile.rotation = player.itemRotation;// + player.direction > 0 ? -MathHelper.TwoPi : MathHelper.TwoPi;
+            projectile.Center = new Vector2(player.itemLocation.X, player.itemLocation.Y);
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -60,7 +59,7 @@ namespace DarknessUnbound.Projectiles.Tropidium
             Color blue = new Color(61, 255, 203);
             Color red = new Color(255, 81, 50);
 
-            return new AnimatedColor(blue, red).GetColor();
+            return new AnimatedColor(red, blue).GetColor();
         }
     }
 }
