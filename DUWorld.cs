@@ -388,6 +388,12 @@ namespace DarknessUnbound
         }
         #endregion
 
+        public static void GenOre(ushort type, int steps, double strength, int times)
+        {
+            for (int i = 0; i < times; i++)
+                WorldGen.OreRunner(WorldGen.genRand.Next(Main.maxTilesX), WorldGen.genRand.Next(100, Main.maxTilesY / 4), strength, steps, type);
+        }
+
         public override TagCompound Save() => new TagCompound() {
             { "RestlessShadows", restlessShadows },
             { "CultistMessage", saidThatCultistsAreSealedByMoons },

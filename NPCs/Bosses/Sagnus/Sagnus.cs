@@ -7,16 +7,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
-	internal class ExampleWormHead : ExampleWorm
+	internal class SagnusHead : Sagnus
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
 
 		public override void SetDefaults()
 		{
-			// Head is 10 defence, body 20, tail 30.
 			npc.CloneDefaults(NPCID.DiggerHead);
+			npc.lifeMax = 275000;
 			npc.aiStyle = -1;
-			npc.color = Color.Aqua;
+			npc.color = Color.Black;
+			npc.scale = 1.25f;
 		}
 
 		public override void Init()
@@ -46,21 +47,42 @@ namespace ExampleMod.NPCs
 				}
 
 				Player target = Main.player[npc.target];
-				if (attackCounter <= 0 && Vector2.Distance(npc.Center, target.Center) < 200 && Collision.CanHit(npc.Center, 1, 1, target.Center, 1, 1))
+				if (attackCounter <= 0 && Vector2.Distance(npc.Center, target.Center) < 400 && Collision.CanHit(npc.Center, 1, 1, target.Center, 1, 1))
 				{
 					Vector2 direction = (target.Center - npc.Center).SafeNormalize(Vector2.UnitX);
-					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
+					direction = direction.RotatedByRandom(MathHelper.ToRadians(24));
 
-					int projectile = Projectile.NewProjectile(npc.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
+					int projectile = Projectile.NewProjectile(npc.Center, direction * 1, ProjectileID.PhantasmalBolt, 5, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
-					attackCounter = 500;
+					attackCounter = 60;
 					npc.netUpdate = true;
 				}
+			}
+
+			if (npc.life < npc.lifeMax / 0.75f && dialogueSaid == 0)
+			{
+				Main.NewText("75% life");
+				dialogueSaid++;
+			}
+			else if (npc.life < npc.lifeMax / 0.5f && dialogueSaid == 1)
+			{
+				Main.NewText("50% life");
+				dialogueSaid++;
+			}
+			else if (npc.life < npc.lifeMax / 0.25f && dialogueSaid == 2)
+			{
+				Main.NewText("25% life");
+				dialogueSaid++;
+			}
+			else if (npc.life < npc.lifeMax / 0.1f && dialogueSaid == 3)
+			{
+				Main.NewText("10% life");
+				dialogueSaid++;
 			}
 		}
 	}
 
-	internal class ExampleWormBody : ExampleWorm
+	internal class SagnusBody : Sagnus
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerBody;
 
@@ -68,11 +90,13 @@ namespace ExampleMod.NPCs
 		{
 			npc.CloneDefaults(NPCID.DiggerBody);
 			npc.aiStyle = -1;
-			npc.color = Color.Aqua;
+			npc.lifeMax = 1;
+			npc.color = Color.Black;
+			npc.scale = 1.25f;
 		}
 	}
 
-	internal class ExampleWormTail : ExampleWorm
+	internal class SagnusTail : Sagnus
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerTail;
 
@@ -80,7 +104,9 @@ namespace ExampleMod.NPCs
 		{
 			npc.CloneDefaults(NPCID.DiggerTail);
 			npc.aiStyle = -1;
-			npc.color = Color.Aqua;
+			npc.lifeMax = 1;
+			npc.color = Color.Black;
+			npc.scale = 1.25f;
 		}
 
 		public override void Init()
@@ -91,27 +117,28 @@ namespace ExampleMod.NPCs
 	}
 
 	// I made this 2nd base class to limit code repetition.
-	public abstract class ExampleWorm : Worm
+	public abstract class Sagnus : Worm
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Worm");
+			DisplayName.SetDefault("Sagnus");
 		}
 
 		public override void Init()
 		{
+			npc.boss = true;
 			minLength = 85;
 			maxLength = 85;
-			tailType = NPCType<ExampleWormTail>();
-			bodyType = NPCType<ExampleWormBody>();
-			headType = NPCType<ExampleWormHead>();
-			speed = 12.5f;
-			turnSpeed = 0.85f;
+			tailType = NPCType<SagnusTail>();
+			bodyType = NPCType<SagnusBody>();
+			headType = NPCType<SagnusHead>();
+			speed = 20f;
+			turnSpeed = 0.45f;
 			flies = true;
 		}
 	}
 
-	//ported from my tAPI mod because I'm lazy
+	//ported from example mod because I'm lazy
 	// This abstract class can be used for non splitting worm type NPC.
 	public abstract class Worm : ModNPC
 	{
@@ -131,6 +158,7 @@ namespace ExampleMod.NPCs
 		public bool directional = false;
 		public float speed;
 		public float turnSpeed;
+		public int dialogueSaid;
 
 		public override void AI()
 		{
@@ -599,5 +627,13 @@ namespace ExampleMod.NPCs
 		{
 			return head ? (bool?)null : false;
 		}
-	}
+
+        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        {
+            if (projectile.maxPenetrate > 0 && !projectile.minion)
+            {
+				projectile.Kill();
+            }
+        }
+    }
 }

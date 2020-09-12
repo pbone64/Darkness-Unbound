@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -33,6 +34,12 @@ namespace DarknessUnbound.Items
             if (player.altFunctionUse == 2)
             {
                 Filters.Scene["Melt"].Deactivate();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+            {
+                Main.NewText("D");
+                DUWorld.GenOre(TileID.RainbowBrick, 10, 10, 1000);
             }
 
             return true;

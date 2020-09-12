@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DarknessUnbound.Projectiles.Bosses.pbone;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -22,7 +23,7 @@ namespace DarknessUnbound.NPCs
                 {
                     case NPCID.EyeofCthulhu:
                         if ((npc.ai[0] == 0 && npc.ai[3] == 40) || (npc.ai[0] == 3 && npc.ai[2] % 60 == 0))
-                            Projectile.NewProjectileDirect(npc.Center, npc.DirectionTo(Main.player[npc.target].Center) * 8f, npc.ai[0] == 0 ? ProjectileID.DeathLaser : ProjectileID.PhantasmalBolt, npc.damage, 4f);
+                            Projectile.NewProjectileDirect(npc.Center, npc.DirectionTo(Main.player[npc.target].Center) * 8f, npc.ai[0] == 0 ? ProjectileID.DeathLaser : ProjectileID.PhantasmalEye, npc.damage, 4f);
 
                         if (npc.ai[0] == 1 || npc.ai[0] == 2)
                         {
@@ -38,7 +39,11 @@ namespace DarknessUnbound.NPCs
                         if (npc.life < npc.lifeMax * 0.85f && npc.ai[0] == 0)
                             npc.ai[0]++;
 
-                        npc.ai[3]++;
+                        if (npc.ai[0] == 0) npc.ai[3]++;
+
+                        if (npc.ai[1] == 2 && npc.ai[2] == 0)
+                            for (int i = 0; i < 6; i++)
+                                Projectile.NewProjectile(npc.Center, Vector2.UnitY.RotatedBy(MathHelper.Pi * 2 / 6 * i) * 16f, npc.ai[0] == 0 ? ProjectileID.PhantasmalBolt : ModContent.ProjectileType<PhantasmalSphere>(), npc.damage, 6f);
                         break;
                 }
             }
