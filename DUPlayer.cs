@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,6 +14,7 @@ namespace DarknessUnbound
         public bool eldritchCore;
         public bool icyStone;
         public bool frostfireNecklace;
+        public bool godMode;
 
         public int eldritchCore_CountDown;
 
@@ -34,6 +36,7 @@ namespace DarknessUnbound
             eldritchCore = false;
             icyStone = false;
             frostfireNecklace = false;
+            godMode = false;
 
             eldritchCore_CountDown--;
             if (eldritchCore_CountDown < 0) eldritchCore_CountDown = 0;
@@ -76,6 +79,29 @@ namespace DarknessUnbound
         }
 
         private void OnHit_IcyStone(NPC target) => target.AddBuff(BuffID.Frostburn, Main.rand.Next(2, 7) * 60);
+        #endregion
+
+        #region Update
+        public override void PostUpdateBuffs()
+        {
+            if (godMode)
+            {
+                player.statLife = player.statLifeMax2;
+                player.statMana = player.statManaMax2;
+
+                for (int i = 0; i < BuffLoader.BuffCount; i++)
+                {
+                    if (!Main.debuff[i]) continue;
+                    player.buffImmune[i] = true;
+                }
+            }
+        }
+
+        public override void UpdateDead()
+        {
+            if (godMode)
+                player.dead = false;
+        }
         #endregion
     }
 }
