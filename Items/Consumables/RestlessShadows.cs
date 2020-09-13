@@ -44,14 +44,7 @@ namespace DarknessUnbound.Items.Consumables
                 NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(chat), Color.DarkRed);
                 NetMessage.SendData(MessageID.WorldData);
             }
-
-            bool flag = true;
-            foreach (NPC npc in from NPC n in Main.npc where n.boss select n)
-            {
-                flag = false;
-                break;
-            }
-            return flag;
+            return true;
         }
     }
 }

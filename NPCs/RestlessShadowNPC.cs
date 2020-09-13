@@ -45,6 +45,13 @@ namespace DarknessUnbound.NPCs
                             for (int i = 0; i < 6; i++)
                                 Projectile.NewProjectile(npc.Center, Vector2.UnitY.RotatedBy(MathHelper.Pi * 2 / 6 * i) * 16f, npc.ai[0] == 0 ? ProjectileID.PhantasmalBolt : ModContent.ProjectileType<PhantasmalSphere>(), npc.damage, 6f);
                         break;
+
+                    case NPCID.KingSlime:
+                        if (npc.ai[3] < 1000)
+                            npc.ai[3] = 1000;
+
+                        if (npc.ai[0] < 0) npc.ai[0]--;
+                        break;
                 }
             }
         }
@@ -55,7 +62,53 @@ namespace DarknessUnbound.NPCs
                 ChatManager.DrawColorCodedString(spriteBatch, Main.fontDeathText,
                     $"AI: {npc.ai[0]}, {npc.ai[1]}, {npc.ai[2]}, {npc.ai[3]}\n" +
                     $"LocalAI: {npc.localAI[0]}, {npc.localAI[1]}, {npc.localAI[2]}, {npc.localAI[3]}",
-                    Vector2.UnitY * 48, Color.Green, 0f, default, Vector2.One);
+                    Vector2.UnitY * 64, Color.Green, 0f, default, Vector2.One);
+        }
+
+        public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+        {
+            switch (npc.type)
+            {
+                case NPCID.KingSlime:
+                    int t = NPCID.SlimeSpiked;
+                    switch (Main.rand.Next(3))
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            t = NPCID.SpikedIceSlime;
+                            break;
+                        case 2:
+                            t = NPCID.SpikedJungleSlime;
+                            break;
+                    }
+                    NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, t);
+                    if (Main.rand.NextBool(10)) NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, NPCID.RainbowSlime);
+                    break;
+            }
+        }
+
+        public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+        {
+            switch (npc.type)
+            {
+                case NPCID.KingSlime:
+                    int t = NPCID.SlimeSpiked;
+                    switch (Main.rand.Next(3))
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            t = NPCID.SpikedIceSlime;
+                            break;
+                        case 2:
+                            t = NPCID.SpikedJungleSlime;
+                            break;
+                    }
+                    NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, t);
+                    if (Main.rand.NextBool(10)) NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, NPCID.RainbowSlime);
+                    break;
+            }
         }
     }
 }
