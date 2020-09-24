@@ -5,19 +5,24 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.NPCs
+namespace DarknessUnbound.NPCs.Bosses.Sagnus.NPCs
 {
 	internal class SagnusHead : Sagnus
 	{
 		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
 
-		public override void SetDefaults()
+        public override void SetStaticDefaults()
+        {
+			DisplayName.SetDefault("Sagnus, Heavenly Scourge");
+        }
+
+        public override void SetDefaults()
 		{
 			npc.CloneDefaults(NPCID.DiggerHead);
 			npc.lifeMax = 275000;
 			npc.aiStyle = -1;
 			npc.color = Color.Black;
-			npc.scale = 1.25f;
+			npc.scale = 1.35f;
 		}
 
 		public override void Init()
@@ -92,7 +97,7 @@ namespace ExampleMod.NPCs
 			npc.aiStyle = -1;
 			npc.lifeMax = 1;
 			npc.color = Color.Black;
-			npc.scale = 1.25f;
+			npc.scale = 1.35f;
 		}
 	}
 
@@ -106,7 +111,7 @@ namespace ExampleMod.NPCs
 			npc.aiStyle = -1;
 			npc.lifeMax = 1;
 			npc.color = Color.Black;
-			npc.scale = 1.25f;
+			npc.scale = 1.35f;
 		}
 
 		public override void Init()
@@ -116,7 +121,6 @@ namespace ExampleMod.NPCs
 		}
 	}
 
-	// I made this 2nd base class to limit code repetition.
 	public abstract class Sagnus : Worm
 	{
 		public override void SetStaticDefaults()
@@ -127,13 +131,13 @@ namespace ExampleMod.NPCs
 		public override void Init()
 		{
 			npc.boss = true;
-			minLength = 85;
-			maxLength = 85;
+			minLength = 100;
+			maxLength = 100;
 			tailType = NPCType<SagnusTail>();
 			bodyType = NPCType<SagnusBody>();
 			headType = NPCType<SagnusHead>();
-			speed = 20f;
-			turnSpeed = 0.45f;
+			speed = 25f;
+			turnSpeed = 0.4f;
 			flies = true;
 		}
 	}
